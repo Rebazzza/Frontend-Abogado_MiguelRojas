@@ -1,0 +1,11 @@
+<div class="contenedor-usuarios">
+    <h1 class="titulo">Exámenes</h1>
+    <ul class="lista-usuarios">
+        @for (usuario of usuarios; track $index) {
+            <li class="elemento">
+                <span class="id">#{{usuario.idUsuario}}</span>
+                <span class="nombre">{{usuario.nombre }}</span>
+            </li>
+        }
+    </ul>
+</div>

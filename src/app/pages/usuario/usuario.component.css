@@ -1,0 +1,59 @@
+.contenedor-usuarios {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+}
+
+.titulo {
+    color: #2d3436;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #00b894;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.lista-usuarios {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap; /* Para que se acomoden una al lado de otra */
+    gap: 10px;
+}
+
+.elemento {
+    background: white;
+    border: 1px solid #dfe6e9;
+    padding: 8px 16px;
+    border-radius: 50px; /* Forma de píldora */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    cursor: default;
+}
+
+.elemento:hover {
+    transform: translateY(-2px);
+    border-color: #00b894;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.id {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #636e72;
+    background: #eee;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.nombre {
+    font-weight: 500;
+    color: #2d3436;
+    text-transform: capitalize;
+}

@@ -1,3 +1,4 @@
+import { usuario } from "./usuario";
 export class Abogado {
     idAbogado: number;
     nombre: string;
@@ -7,6 +8,6 @@ export class Abogado {
     correo: string;
     especialidad: string;
     estado: boolean = true;
-    usuario
+    usuario: usuario;
 
 }

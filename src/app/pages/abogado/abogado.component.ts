@@ -1,15 +1,17 @@
-import { Component, inject,signal } from '@angular/core';
-import { AbogadoService } from '../../services/abogado.service';
+import { Component, effect, inject, signal, untracked, viewChild } from '@angular/core';
 import { Abogado } from '../../model/abogado';
+import { AbogadoService } from '../../services/abogado.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { Observable } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { switchMap, tap } from 'rxjs';
 @Component({
   selector: 'app-abogado',
   imports: [

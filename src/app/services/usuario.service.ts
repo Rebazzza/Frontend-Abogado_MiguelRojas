@@ -1,16 +1,22 @@
-import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 import { usuario } from '../model/usuario';
+import { GenericService } from './generic.service';
+import { GenericSignalService } from './generic-signal.service';
+
 @Injectable({
   providedIn: 'root',
 })
-export class UsuarioService {
-  private url:string =`${environment.HOST}/usuarios`;
+export class UsuarioService extends GenericSignalService<usuario> {
+  //private url = 'http://localhost:9090/exams';
+  protected override url:string = `${environment.HOST}/usuarios`;
 
-  private readonly http = inject(HttpClient);
+  //constructor(private http: HttpClient){}
+  //private readonly http = inject(HttpClient);
 
-  findAll(){
-    return this.http.get<usuario[]>(this.url);
-  }
+  // get post put delete
+  /*findAll(){
+    return this.http.get<Exam[]>(this.url);
+  }*/
 }

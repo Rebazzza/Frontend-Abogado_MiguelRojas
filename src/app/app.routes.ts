@@ -4,6 +4,13 @@ import { UsuarioComponent } from './pages/usuario/usuario.component';
 
 
 export const routes: Routes = [
-    { path: 'pages/category', component: AbogadoComponent},
-    { path: 'pages/exam', component: AbogadoComponent }
+    {
+         path: 'pages/abogado', component: AbogadoComponent,
+         children:[
+            {path:'new',component: AbogadoComponent},
+            {path:'edit/:id',component: AbogadoComponent},
+         ]
+        },
+        {path:'pages/usuario',component:UsuarioComponent}
+    
 ];

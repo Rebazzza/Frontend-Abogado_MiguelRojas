@@ -1,4 +1,4 @@
-export class area_derecho{
+export class AreaDerecho{
     codigo_area: string;
     nombre: string;
     descripcion: string;

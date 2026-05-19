@@ -1,1 +1,50 @@
-<p>expediente works!</p>
+<!es un ancla flotante>
+<router-outlet></router-outlet>
+
+
+<mat-form-field class="search-field">
+  <mat-label>Buscar Abogado</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Miguel Rojas" #input>
+</mat-form-field>
+
+<div class="list-container mat-elevation-z4">
+  
+  <div class="custom-list">
+    @for (expediente of $expediente(); track $expediente.idExPediente) {
+      <div class="list-item">
+        
+        <div class="item-info">
+          <p class="item-title">{{ expediente.titulo }} {{ abogado.apellido }}</p>
+          <p class="item-subtitle">
+            <strong>Correo:</strong> {{ abogado.correo }} | 
+            <strong>Teléfono:</strong> {{ abogado.telefono }}
+          </p>
+          <p class="item-details">
+            <strong>Especialidad:</strong> {{ abogado.especialidad }} | 
+            <strong>DNI:</strong> {{ abogado.dni }}
+          </p>
+        </div>
+
+        <div class="item-actions">
+          <button mat-icon-button [routerLink]="['edit', abogado.idAbogado]" color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          
+          <button mat-icon-button (click)="delete(abogado.idAbogado)" color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+
+      </div>
+    } @empty {
+      <div class="no-data-message">
+        <mat-icon>search_off</mat-icon>
+        <p>No se encontraron abogados que coincidan con "{{ input.value }}"</p>
+      </div>
+    }
+  </div>
+
+  <button mat-fab class="fab-button" routerLink="/pages/abogado/new">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

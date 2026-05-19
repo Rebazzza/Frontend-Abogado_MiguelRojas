@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, untracked, viewChild } from '@angular/core';
+import { Component, effect, inject, signal, untracked, viewChild, OnInit } from '@angular/core';
 import { usuario } from '../../model/usuario';
 import { UsuarioService } from '../../services/usuario.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -32,7 +32,7 @@ import { UsuarioDialogComponent } from './usuario-dialog/usuario-dialog.componen
   templateUrl: './usuario.component.html',
   styleUrl: './usuario.component.css',
 })
-export class UsuarioComponent {
+export class UsuarioComponent implements OnInit { 
   private readonly usuarioService = inject(UsuarioService);
   private readonly snackBar = inject(MatSnackBar);
   private readonly dialog = inject(MatDialog);
@@ -43,61 +43,77 @@ export class UsuarioComponent {
 
   protected $usuarios = this.usuarioService.$listChange;
   
-  protected displayedColumns: string[] = ['idUsuario', 'nombre', 'rol', 'password'];
+  protected displayedColumns: string[] = ['idUsuario', 'nombre', 'rol', 'acciones'];
 
   constructor() {
-    this.usuarioService.findAll().subscribe(data => this.usuarioService.setListChange(data));
-
     this.initializeEffects();
+  }
 
+  ngOnInit(): void {
+    this.listarUsuarios();
+  }
+
+  private listarUsuarios(): void {
+    this.usuarioService.findAll().subscribe({
+      next: (data) => this.usuarioService.setListChange(data),
+      error: (err) => console.error('Error al cargar usuarios', err)
+    });
   }
 
   private initializeEffects(){
-    effect( () => {
+    effect(() => {
       const data = this.$usuarios();
       const p = this.$paginator();
       const s = this.$sort();
       const ds = this.$dataSource();
       
       ds.data = data;
-      ds.paginator = p;
-      ds.sort = s;
+      ds.paginator = p ?? null;
+      ds.sort = s ?? null;
     }); 
 
     effect(() => {
       const message = this.usuarioService.$messageChange();
       if(message){
-        this.snackBar.open(message, 'INFO', {duration: 2000, horizontalPosition: 'right', verticalPosition: 'top'});
-        //esta limpieza no activa el rastreo del effect, no entra a un bucle infinito
-        untracked( () => this.usuarioService.setMessageChange('') );
+        this.snackBar.open(message, 'INFO', {
+          duration: 2000, 
+          horizontalPosition: 'right', 
+          verticalPosition: 'top'
+        });
+        untracked(() => this.usuarioService.setMessageChange(''));
       }
     });
   }
 
   openDialog(usuario?: usuario){
-    this.dialog.open(UsuarioDialogComponent,{
+    const dialogRef = this.dialog.open(UsuarioDialogComponent, {
       width: '650px',
-      data: usuario,
-      // disableClose: true
+      data: usuario
+    });
+
+    
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarUsuarios();
     });
   }
 
   delete(idUsuario: number){
-      const ok = window.confirm('Are you sure to delete?');
-      if(ok){
-        this.usuarioService.delete(idUsuario)
-        .pipe(
-          switchMap( () => this.usuarioService.findAll() ),
-          tap( data => this.usuarioService.setListChange(data) ),
-          tap( () => this.usuarioService.setMessageChange('DELETED') )
-        )
-        .subscribe();
-      }
+    const ok = window.confirm('Are you sure to delete?');
+    if(ok){
+      this.usuarioService.delete(idUsuario).pipe(
+        switchMap(() => this.usuarioService.findAll()),
+        tap(data => this.usuarioService.setListChange(data)),
+        tap(() => this.usuarioService.setMessageChange('DELETED'))
+      ).subscribe();
     }
-  
-  applyFilter(e: any){
-    const filterValue = e.target.value;
-    this.$dataSource().filter = filterValue.trim().toLowerCase();
   }
-
+  
+  applyFilter(e: Event){ 
+    const filterValue = (e.target as HTMLInputElement).value;
+    this.$dataSource().filter = filterValue.trim().toLowerCase();
+    
+    if (this.$dataSource().paginator) {
+      this.$dataSource().paginator!.firstPage();
+    }
+  }
 }

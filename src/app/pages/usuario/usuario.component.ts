@@ -42,7 +42,7 @@ export class UsuarioComponent {
   protected $sort = viewChild(MatSort);
 
   protected $usuarios = this.usuarioService.$listChange;
-
+  
   protected displayedColumns: string[] = ['idUsuario', 'nombre', 'rol', 'password'];
 
   constructor() {

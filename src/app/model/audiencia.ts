@@ -1,5 +1,5 @@
 import { Abogado } from "./abogado";
-import {Caso} from "./caso";
+
 
 
 
@@ -11,5 +11,5 @@ export class Audiencia {
   hora?: string;        
   tipoAudiencia?: string;
   lugarLink?: string;
-  caso: Caso;           
+         
 }

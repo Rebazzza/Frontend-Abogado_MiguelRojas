@@ -1,26 +1,53 @@
-<mat-dialog-content>
-    <mat-toolbar>
-        <span>Exam Info</span>
-    </mat-toolbar>
+<h2 mat-dialog-title style="margin-bottom: 10px;">
+  <mat-icon style="vertical-align: middle; margin-right: 8px;">
+    {{ edicion ? 'edit_note' : 'person_add' }}
+  </mat-icon>
+  {{ edicion ? 'Modificar Usuario' : 'Registrar Nuevo Usuario' }}
+</h2>
 
-    <div class="example-container">
-        <mat-form-field>
-            <input matInput placeholder="nombre" [(ngModel)]="$usuario().nombre">
-        </mat-form-field>
+<mat-dialog-content style="min-width: 350px; display: flex; flex-direction: column; gap: 15px; padding-top: 10px;">
+  
+  <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 10px;">
+    
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Nombre de Usuario</mat-label>
+      <input matInput formControlName="nombre" placeholder="Ej. Juan Pérez">
+      <mat-icon matSuffix>person</mat-icon>
+      @if (form.get('nombre')?.hasError('required')) {
+        <mat-error>El nombre es obligatorio</mat-error>
+      }
+    </mat-form-field>
 
-        <mat-form-field>
-            <input matInput placeholder="rol" [(ngModel)]="$usuario().rol">
-        </mat-form-field>
-        
-        <button mat-flat-button (click)="operate()">
-            <span>OK</span>
-            <mat-icon>done</mat-icon>
-        </button>
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Rol / Permiso</mat-label>
+      <input matInput formControlName="rol" placeholder="Ej. ADMIN, ABOGADO, ASISTENTE">
+      <mat-icon matSuffix>admin_panel_settings</mat-icon>
+      @if (form.get('rol')?.hasError('required')) {
+        <mat-error>El rol es obligatorio</mat-error>
+      }
+    </mat-form-field>
 
-        <button mat-flat-button class="cancel-button" (click)="close()">
-            <span>Cancel</span>
-            <mat-icon>cancel</mat-icon>
-        </button>
-    </div>
+    @if (!edicion) {
+      <mat-form-field appearance="outline" style="width: 100%;">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" type="password" placeholder="Escribe la clave secreta">
+        <mat-icon matSuffix>lock</mat-icon>
+        @if (form.get('password')?.hasError('required')) {
+          <mat-error>La contraseña es obligatoria para nuevos usuarios</mat-error>
+        }
+      </mat-form-field>
+    }
 
+  </form>
 </mat-dialog-content>
+
+<mat-dialog-actions align="end" style="padding-bottom: 15px;">
+  <button mat-button (click)="close()">
+    <mat-icon style="margin-right: 4px;">cancel</mat-icon> Cancelar
+  </button>
+  
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="operate()">
+    <mat-icon style="margin-right: 4px;">done</mat-icon> 
+    {{ edicion ? 'Actualizar' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

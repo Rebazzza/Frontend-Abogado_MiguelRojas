@@ -1,0 +1,53 @@
+<h2 mat-dialog-title style="margin-bottom: 10px;">
+  <mat-icon style="vertical-align: middle; margin-right: 8px;">
+    {{ edicion ? 'badge' : 'person_add' }}
+  </mat-icon>
+  {{ edicion ? 'Modificar Abogado' : 'Registrar Nuevo Abogado' }}
+</h2>
+
+<mat-dialog-content style="min-width: 400px; display: flex; flex-direction: column; gap: 12px; padding-top: 10px;">
+  <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 10px;">
+    
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="apellido">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Correo Electrónico</mat-label>
+      <input matInput formControlName="correo" type="email">
+    </mat-form-field>
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>DNI</mat-label>
+        <input matInput formControlName="dni" maxlength="8">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Especialidad</mat-label>
+      <input matInput formControlName="especialidad" placeholder="Ej. Derecho Penal, Civil">
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" style="padding-bottom: 15px;">
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="operate()">
+    {{ edicion ? 'Actualizar' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

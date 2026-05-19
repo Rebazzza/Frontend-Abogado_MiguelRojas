@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import {expediente} from '../model/expediente'
 
+
 @Injectable({
   providedIn: 'root',
 })

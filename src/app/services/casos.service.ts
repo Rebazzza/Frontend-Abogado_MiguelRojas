@@ -8,15 +8,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
   })
 export class CasosService {
-  
+  // 1. URL base apuntando a la tabla o endpoint de casos
   private readonly url: string = `${environment.HOST}/casos`;
 
   private readonly http = inject(HttpClient);
 
-  
   private readonly _casos = signal<Casos[]>([]);
   private readonly _message = signal<string>('');
-
 
   readonly $casosChange = this._casos.asReadonly();
   readonly $messageChange = this._message.asReadonly();

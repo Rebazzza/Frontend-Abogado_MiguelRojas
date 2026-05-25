@@ -24,7 +24,6 @@ import { UsuarioDialogComponent } from './usuario-dialog/usuario-dialog.componen
     MatSortModule,
     MatButtonModule,
     MatIconModule,
-    RouterLink,
     RouterOutlet,
     MatSnackBarModule,
     MatDialogModule

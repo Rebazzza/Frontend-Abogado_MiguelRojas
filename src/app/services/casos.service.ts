@@ -8,9 +8,53 @@ import { GenericSignalService } from './generic-signal.service';
 
 @Injectable({
   providedIn: 'root',
+<<<<<<< HEAD
 })
 export class CasoService extends GenericSignalService<Casos> {
   
   protected override url:string = `${environment.HOST}/casos`;
 
+=======
+  })
+export class CasosService {
+  // 1. URL base apuntando a la tabla o endpoint de casos
+  private readonly url: string = `${environment.HOST}/casos`;
+
+  private readonly http = inject(HttpClient);
+
+  private readonly _casos = signal<Casos[]>([]);
+  private readonly _message = signal<string>('');
+
+  readonly $casosChange = this._casos.asReadonly();
+  readonly $messageChange = this._message.asReadonly();
+
+  findAll(): Observable<Casos[]> {
+    return this.http.get<Casos[]>(this.url);
+  }
+
+  findById(id: number): Observable<Casos> {
+    return this.http.get<Casos>(`${this.url}/${id}`);
+  }
+
+  save(caso: Casos): Observable<Casos> {
+    return this.http.post<Casos>(this.url, Casos);
+  }
+
+  update(id: number, caso: Casos): Observable<Casos> {
+    return this.http.put<Casos>(`${this.url}/${id}`, caso);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
+  }
+
+  
+  setCasosChange(data: Casos[]): void {
+    this._casos.set(data);
+  }
+
+  setMessageChange(msg: string): void {
+    this._message.set(msg);
+  }
+>>>>>>> 5fc849086ae2802b085e234d8859d1d537f605cd
 }

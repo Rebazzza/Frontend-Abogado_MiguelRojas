@@ -1,1 +1,49 @@
-<p>pago works!</p>
+<div class="container">
+  <!-- Navegación Lateral -->
+  <aside class="sidebar">
+    <button 
+      mat-raised-button 
+      [class.active]="$activeTab() === 'pendientes'"
+      (click)="$activeTab.set('pendientes')"
+      class="nav-button">
+      PAGOS PENDIENTES
+    </button>
+    
+    <button 
+      mat-raised-button 
+      [class.active]="$activeTab() === 'liquidados'"
+      (click)="$activeTab.set('liquidados')"
+      class="nav-button">
+      PAGOS LIQUIDADOS
+    </button>
+  </aside>
+
+  <!-- Contenido Principal -->
+  <main class="content">
+    <h1>{{ $activeTab() === 'pendientes' ? 'PAGOS PENDIENTES' : 'PAGOS LIQUIDADOS' }}</h1>
+    
+    <!-- Buscador -->
+    <mat-form-field class="search-field">
+      <mat-label>Buscar pago</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Cliente, referencia">
+    </mat-form-field>
+
+    <!-- Lista de Pagos -->
+    <div class="list-container">
+      <div class="list-item" *ngFor="let pago of getFilteredPagos()">
+        <div class="item-content">
+          <h3>Pago #{{ pago.idPago }} - Método: {{ pago.metodoPago }}</h3>
+          <p class="subtitle">Monto: S/. {{ formatMonto(pago.monto) }}</p>
+        </div>
+        <div class="item-date">
+          {{ pago.fechaPago | date: 'dd/MM/yyyy' }}
+        </div>
+      </div>
+
+      <!-- Mensaje cuando no hay datos -->
+      <div *ngIf="getFilteredPagos().length === 0" class="no-data">
+        <p>No hay pagos para mostrar</p>
+      </div>
+    </div>
+  </main>
+</div>

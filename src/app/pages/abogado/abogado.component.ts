@@ -1,18 +1,18 @@
-import { Component, effect, inject, signal, untracked, viewChild, OnInit } from '@angular/core';
-import { Abogado } from '../../model/abogado'; // Asegúrate de que la clase empiece con mayúscula o igual a tu modelo
-import { AbogadoService } from '../../services/abogado.service';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterOutlet } from '@angular/router';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { switchMap, tap } from 'rxjs';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AbogadoDialogComponent } from './abogado-dialog/abogado-dialog.component';
+  import { Component, effect, inject, signal, untracked, viewChild, OnInit } from '@angular/core';
+  import { Abogado } from '../../model/abogado'; // Asegúrate de que la clase empiece con mayúscula o igual a tu modelo
+  import { AbogadoService } from '../../services/abogado.service';
+  import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+  import { MatFormFieldModule } from '@angular/material/form-field';
+  import { MatInputModule } from '@angular/material/input';
+  import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+  import { MatSort, MatSortModule } from '@angular/material/sort';
+  import { MatButtonModule } from '@angular/material/button';
+  import { MatIconModule } from '@angular/material/icon';
+  import { RouterOutlet } from '@angular/router';
+  import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+  import { switchMap, tap } from 'rxjs';
+  import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+  import { AbogadoDialogComponent } from './abogado-dialog/abogado-dialog.component';
 
 @Component({
   selector: 'app-abogado',

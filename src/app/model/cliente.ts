@@ -1,6 +1,13 @@
 export class Cliente {
     idcliente: number;
-    name: string;
-    description: string;
-    status: boolean;
+    nombre: string;
+    descripcion: string;
+    estado: boolean;
+    dni: string;
+    RUC: string;
+    telefono: string;
+    direccion: string;
+    correo: string;
+    tipoCliente: string;
+
 }

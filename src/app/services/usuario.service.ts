@@ -9,14 +9,5 @@ import { GenericSignalService } from './generic-signal.service';
   providedIn: 'root',
 })
 export class UsuarioService extends GenericSignalService<usuario> {
-  //private url = 'http://localhost:8080/usuarios';
   protected override url:string = `${environment.HOST}/usuarios`;
-
-  //constructor(private http: HttpClient){}
-  //private readonly http = inject(HttpClient);
-
-  // get post put delete
-  /*findAll(){
-    return this.http.get<Exam[]>(this.url);
-  }*/
 }

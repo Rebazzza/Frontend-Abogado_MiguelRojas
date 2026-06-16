@@ -61,7 +61,7 @@ export class CitaDialogComponent implements OnInit {
 
     if (this.isEdit) {
       // Flujo de Actualización
-      this.citaService.update(citaData.idcita, citaData).pipe(
+      this.citaService.update(citaData.idCita, citaData).pipe(
         switchMap(() => this.citaService.findAll()),
         tap(data => this.citaService.setListChange(data)),
         tap(() => this.citaService.setMessageChange('Cita actualizada correctamente'))

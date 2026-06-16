@@ -7,5 +7,5 @@ import { GenericSignalService } from './generic-signal.service';
   providedIn: 'root',
 })
 export class AreaDerechoService extends GenericSignalService<AreaDerecho> {
-  protected override url: string = `${environment.HOST}/areas-derecho`;
+  protected override url: string = `${environment.HOST}/areas`;
 }

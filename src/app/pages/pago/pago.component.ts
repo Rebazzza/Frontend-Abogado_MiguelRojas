@@ -47,7 +47,7 @@ export class PagoComponent implements OnInit {
   protected $sort = viewChild(MatSort);
 
   // Columnas añadidas y ordenadas igual que el HTML
-  protected displayedColumns: string[] = ['idPago', 'monto', 'fechaPago', 'metodoPago', 'estadoPago'];
+  protected displayedColumns: string[] = ['idPago', 'monto', 'fechaPago', 'metodoPago', 'estadoPago','acciones'];
 
   constructor() {
     this.initializeEffects();

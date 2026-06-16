@@ -1,5 +1,5 @@
 export class cita {
-    idcita: number;
+    idCita: number;
     nombreCliente: string;
     abogadoAsignado: string;
     asuntoLegal: string;

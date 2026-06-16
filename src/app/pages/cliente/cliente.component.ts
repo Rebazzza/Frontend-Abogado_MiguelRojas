@@ -91,10 +91,10 @@ export class ClienteComponent implements OnInit {
     });
   }
 
-  delete(idAbogado: number){
+  delete(idCliente: number){
     const ok = window.confirm('¿Estás seguro de eliminar este abogado?');
     if(ok){
-      this.clienteService.delete(idAbogado).pipe(
+      this.clienteService.delete(idCliente).pipe(
         switchMap(() => this.clienteService.findAll()),
         tap(data => this.clienteService.setListChange(data)),
         tap(() => this.clienteService.setMessageChange('DELETED'))

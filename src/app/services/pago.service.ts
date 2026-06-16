@@ -7,5 +7,5 @@ import { GenericSignalService } from './generic-signal.service';
   providedIn: 'root',
 })
 export class PagoService extends GenericSignalService<pago> {
-  protected override url: string = `${environment.HOST}/Pago`;
+  protected override url: string = `${environment.HOST}/pagos`;
 }

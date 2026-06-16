@@ -14,6 +14,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { switchMap, tap } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Casos } from '../../model/Caso';
+import { CasosDialogComponent } from './casos-dialog/casos-dialog.component';
 
 
 @Component({
@@ -52,10 +53,10 @@ export class CasosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listarAbogados();
+    this.listarCasos();
   }
 
-  private listarAbogados(): void {
+  private listarCasos(): void {
     this.CasosService.findAll().subscribe({
       next: (data) => this.CasosService.setListChange(data),
       error: (err) => console.error('Error al cargar casos', err)
@@ -80,16 +81,16 @@ export class CasosComponent implements OnInit {
     });
   }
 
-  //openDialog(cliente?: expediente){
-    //const dialogRef = this.dialog.open(ClienteDialogComponent, {
-      //width: '650px',
-      //data: cliente
-    //});
+    openDialog(Casos?: Casos){
+    const dialogRef = this.dialog.open(CasosDialogComponent, {
+      width: '650px',
+      data: Casos
+    });
 
-    //dialogRef.afterClosed().subscribe(() => {
-     // this.listarAbogados();
-    //});
-  //}
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarCasos();
+    });
+  }
 
   delete(idExPediente: number){
     const ok = window.confirm('¿Estás seguro de eliminar este abogado?');

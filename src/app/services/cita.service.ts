@@ -7,5 +7,5 @@ import { GenericSignalService } from './generic-signal.service';
   providedIn: 'root',
 })
 export class CitaService extends GenericSignalService<cita> {
-  protected override url: string = `${environment.HOST}/audiencias`;
+  protected override url: string = `${environment.HOST}/citas`;
 }

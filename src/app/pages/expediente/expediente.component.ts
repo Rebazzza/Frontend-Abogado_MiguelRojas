@@ -1,144 +1,109 @@
-<<<<<<< HEAD
-import { Component, inject, viewChild, signal, effect, untracked } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, untracked, viewChild } from '@angular/core';
 import { ExpedienteService } from '../../services/expediente.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { expediente, expedienteVistaResumen } from '../../model/expediente';
+
+
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterOutlet } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { switchMap, tap } from 'rxjs';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { expediente } from '../../model/expediente';
+
 
 @Component({
   selector: 'app-expediente',
-  imports: [],
+  standalone: true,
+  imports: [
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterOutlet,
+    MatSnackBarModule,
+    MatDialogModule
+  ],
   templateUrl: './expediente.component.html',
   styleUrl: './expediente.component.css',
 })
-export class ExpedienteComponent {
-  private readonly expedienteService = inject(ExpedienteService);
+export class ExpedienteComponent implements OnInit { 
+  private readonly ExpedienteService = inject(ExpedienteService);
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly dialog = inject(MatDialog);
   
-  //creador de alertas
-  private readonly snackBar = inject(MatSnackBar);
-=======
-import { Component, inject, signal, effect, untracked } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ExpedienteService } from '../../services/expediente.service';
-import { expedienteVistaResumen } from '../../model/expediente';
-import { switchMap, tap } from 'rxjs';
-import { Router } from '@angular/router';
 
-@Component({
-  selector: 'app-expediente',
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSnackBarModule
-  ],
-  templateUrl: './expediente.component.html',
-  styleUrl: './expediente.component.css'
-})
-export class ExpedienteComponent {
-  private readonly expedienteService = inject(ExpedienteService);
-  private readonly snackBar = inject(MatSnackBar);
-  private readonly router = inject(Router);
+  protected $dataSource = signal(new MatTableDataSource<expediente>());
+  protected $paginator = viewChild(MatPaginator);
+  protected $sort = viewChild(MatSort);
 
-  protected $expedientes = signal<expedienteVistaResumen[]>([]);
-  protected $filterValue = signal<string>('');
+  // Columnas añadidas y ordenadas igual que el HTML
+  protected displayedColumns: string[] = ['idExpediente', 'titulo', 'tipoExpediente', 'resumenExpediente', 'victima', 'victimario', 'fechaInicio', 'fechaCierre','estadoExpediente','pdfExpediente'];
 
   constructor() {
-    this.loadExpedientes();
     this.initializeEffects();
   }
 
-  private loadExpedientes(): void {
-    this.expedienteService.findAll().subscribe({
-      next: (data: any) => this.expedienteService.setExpedienteChange(data),
+  ngOnInit(): void {
+    this.listarExpedientes();
+  }
+
+  private listarExpedientes(): void {
+    this.ExpedienteService.findAll().subscribe({
+      next: (data) => this.ExpedienteService.setListChange(data),
       error: (err) => console.error('Error al cargar expedientes', err)
     });
   }
 
-  private initializeEffects(): void {
+  private initializeEffects(){
     effect(() => {
-      const data = this.expedienteService.$expedienteChange();
-      this.$expedientes.set(data);
-    });
+      const data = this.ExpedienteService.$listChange();
+      const ds = this.$dataSource();
+      ds.data = data;
+      ds.paginator = this.$paginator() ?? null;
+      ds.sort = this.$sort() ?? null;
+    }); 
 
     effect(() => {
-      const message = this.expedienteService.$messageChange();
-      if (message) {
-        this.snackBar.open(message, 'INFO', {
-          duration: 2000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top'
-        });
-        untracked(() => this.expedienteService.setMessageChange(''));
-      }
-    });
-  }
-
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.$filterValue.set(filterValue.toLowerCase());
-  }
-
-  getFilteredExpedientes(): expedienteVistaResumen[] {
-    const expedientes = this.$expedientes();
-    const filterValue = this.$filterValue();
-
-    return expedientes.filter(exp => {
-      const matchesFilter = filterValue === '' ||
-        exp.titulo.toLowerCase().includes(filterValue) ||
-        exp.victima.toLowerCase().includes(filterValue) ||
-        exp.victimario.toLowerCase().includes(filterValue) ||
-        exp.resumenExpediente.toLowerCase().includes(filterValue);
-
-      return matchesFilter;
-    });
-  }
-
-  verDetalles(idExPediente: number): void {
-    this.router.navigate(['/expediente', idExPediente]);
-  }
-
-  delete(idExPediente: number): void {
-    const ok = window.confirm('¿Estás seguro de que deseas eliminar este expediente?');
-    if (ok) {
-      this.expedienteService.delete(idExPediente)
-        .pipe(
-          switchMap(() => this.expedienteService.findAll()),
-          tap(data => this.expedienteService.setExpedienteChange(data)),
-          tap(() => this.expedienteService.setMessageChange('EXPEDIENTE ELIMINADO'))
-        )
-        .subscribe();
-    }
-  }
-}
->>>>>>> 5fc849086ae2802b085e234d8859d1d537f605cd
-
-  protected $expediente = signal<expedienteVistaResumen[]>([]);
-
-  constructor(){
-    this.expedienteService.findAll().subscribe(data => this.expedienteService.setExpedienteChange(data));
-    effect(() =>{
-      const data = this.expedienteService.$expedienteChange();
-      this.$expediente.set(data);
-    });
-    effect(() =>{
-      const message = this.expedienteService.$messageChange();
+      const message = this.ExpedienteService.$messageChange();
       if(message){
-        this.snackBar.open(message, 'INFO', {duration: 2000, horizontalPosition: 'right', verticalPosition:'top'});
-        untracked(() => this.expedienteService.setMessageChange(''));
+        this.snackBar.open(message, 'INFO', { duration: 2000, horizontalPosition: 'right', verticalPosition: 'top' });
+        untracked(() => this.ExpedienteService.setMessageChange(''));
       }
     });
   }
+
+  //openDialog(cliente?: expediente){
+    //const dialogRef = this.dialog.open(ClienteDialogComponent, {
+      //width: '650px',
+      //data: cliente
+    //});
+
+    //dialogRef.afterClosed().subscribe(() => {
+     // this.listarAbogados();
+    //});
+  //}
 
   delete(idExPediente: number){
-    const ok = window.confirm('Are you sure to delete?');
+    const ok = window.confirm('¿Estás seguro de eliminar este abogado?');
     if(ok){
-      this.expedienteService.delete(idExPediente).pipe(switchMap(() => this.expedienteService.findAll()), tap(data => this.expedienteService.setExpedienteChange(data)), tap(() => this.expedienteService.setMessageChange('DELETED'))).subscribe();
+      this.ExpedienteService.delete(idExPediente).pipe(
+        switchMap(() => this.ExpedienteService.findAll()),
+        tap(data => this.ExpedienteService.setListChange(data)),
+        tap(() => this.ExpedienteService.setMessageChange('DELETED'))
+      ).subscribe();
     }
+  }
+  
+  applyFilter(e: Event){ 
+    const filterValue = (e.target as HTMLInputElement).value;
+    this.$dataSource().filter = filterValue.trim().toLowerCase();
   }
 }

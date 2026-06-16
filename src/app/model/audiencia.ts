@@ -1,8 +1,4 @@
 import { Abogado } from "./abogado";
-
-
-
-
 export class Audiencia {
   idAudiencia?: number; 
   fecha: string;        

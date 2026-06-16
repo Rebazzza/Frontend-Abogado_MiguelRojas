@@ -8,5 +8,5 @@ import { GenericSignalService } from './generic-signal.service';
   providedIn: 'root',
 })
 export class ExpedienteService extends GenericSignalService<expediente> {
-  protected override url: string = `${environment.HOST}/Pago`;
+  protected override url: string = `${environment.HOST}/expedientes`;
 }

@@ -1,1 +1,73 @@
-<p>audiencia-dialog works!</p>
+<h2 mat-dialog-title style="margin-bottom: 10px;">
+  <mat-icon style="vertical-align: middle; margin-right: 8px;">
+    {{ edicion ? 'edit_calendar' : 'event' }}
+  </mat-icon>
+  {{ edicion ? 'Modificar Audiencia' : 'Registrar Audiencia' }}
+</h2>
+
+<mat-dialog-content style="min-width: 500px; display: flex; flex-direction: column; gap: 12px; padding-top: 10px;">
+  <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 10px;">
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Fecha</mat-label>
+        <input matInput formControlName="fecha" type="date">
+        <mat-error *ngIf="form.get('fecha')?.hasError('required')">La fecha es obligatoria</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Hora</mat-label>
+        <input matInput formControlName="hora" type="time">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Tipo de Audiencia</mat-label>
+      <input matInput formControlName="tipoAudiencia" placeholder="Ej. Oral, Preliminar, Virtual">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Dirección</mat-label>
+      <input matInput formControlName="direccion" placeholder="Ej. Av. Javier Prado 456, Lima">
+      <mat-error *ngIf="form.get('direccion')?.hasError('required')">La dirección es obligatoria</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Enlace (Meet / Zoom)</mat-label>
+      <input matInput formControlName="lugarLink" placeholder="https://...">
+      <mat-icon matSuffix>link</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Abogado</mat-label>
+      <mat-select formControlName="idAbogado">
+        @for (abogado of abogados; track abogado.idAbogado) {
+          <mat-option [value]="abogado.idAbogado">
+            {{ abogado.nombre }} {{ abogado.apellido }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="form.get('idAbogado')?.hasError('required')">Seleccione un abogado</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Caso</mat-label>
+      <mat-select formControlName="idCaso">
+        @for (caso of casos; track caso.idCaso) {
+          <mat-option [value]="caso.idCaso">
+            {{ caso.titulo }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="form.get('idCaso')?.hasError('required')">Seleccione un caso</mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" style="padding-bottom: 15px;">
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="operate()">
+    {{ edicion ? 'Actualizar' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

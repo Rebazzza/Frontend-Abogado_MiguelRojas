@@ -1,1 +1,65 @@
-<p>area-derecho works!</p>
+<router-outlet></router-outlet>
+
+<mat-form-field appearance="outline" style="margin: 20px 0 10px 20px; width: calc(100% - 40px); max-width: 400px;">
+  <mat-label>Filtrar Áreas de Derecho</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Penal" #input>
+</mat-form-field>
+
+<div class="mat-elevation-z8" style="margin: 0 20px 20px 20px;">
+  <table mat-table [dataSource]="$dataSource()" matSort>
+
+    <ng-container matColumnDef="idArea">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let row"> {{ row.idArea }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+      <td mat-cell *matCellDef="let row"> {{ row.nombre }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+      <td mat-cell *matCellDef="let row" style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        {{ row.descripcion }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-chip [style.background-color]="row.estado ? '#e8f5e9' : '#ffebee'"
+                  [style.color]="row.estado ? '#2e7d32' : '#c62828'">
+          {{ row.estado ? 'Activo' : 'Inactivo' }}
+        </mat-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button color="primary" (click)="openDialog(row)" title="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="delete(row.idArea)" title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="5" style="text-align: center; padding: 15px;">
+        No hay datos que coincidan con el filtro "{{ input.value }}"
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página de áreas"></mat-paginator>
+</div>
+
+<button mat-fab color="primary" style="position: fixed; bottom: 20px; right: 20px;" (click)="openDialog()" title="Registrar nueva área de derecho">
+  <mat-icon>add</mat-icon>
+</button>

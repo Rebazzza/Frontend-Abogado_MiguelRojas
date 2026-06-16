@@ -1,6 +1,6 @@
-export class AreaDerecho{
-    codigo_area: string;
-    nombre: string;
-    descripcion: string;
-    estado: boolean;
+export class AreaDerecho {
+  idArea: number;
+  nombre: string;
+  descripcion: string;
+  estado: boolean = true;
 }

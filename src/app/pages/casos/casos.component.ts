@@ -46,7 +46,7 @@ export class CasosComponent implements OnInit {
   protected $sort = viewChild(MatSort);
 
   // Columnas añadidas y ordenadas igual que el HTML
-  protected displayedColumns: string[] = ['idExpediente', 'titulo', 'tipoExpediente', 'resumenExpediente', 'victima', 'victimario', 'fechaInicio', 'fechaCierre','estadoExpediente','pdfExpediente'];
+  protected displayedColumns: string[] = ['idCaso', 'titulo', 'descripcion', 'estado'];
 
   constructor() {
     this.initializeEffects();

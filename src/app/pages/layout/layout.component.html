@@ -21,7 +21,7 @@
                 <mat-icon>account_box</mat-icon>
                 <span>My account</span>
             </button>
-            <button mat-menu-item (click)="sidenav.opened = false">
+            <button mat-menu-item (click)="logout()">
                 <mat-icon>exit_to_app</mat-icon>
                 <span>Logout</span>
             </button>
@@ -90,15 +90,13 @@
             
 
             <mat-divider></mat-divider>
-<<<<<<< HEAD
+
             <button class="myButton" [routerLinkActive]="['active']" mat-menu-item (click)="sidenav.toggle()" 
                 routerLink="/pages/usuario">
                 <mat-icon>person</mat-icon>
                 <span>Usuario</span>
             </button>
             <mat-divider></mat-divider>
-            
-=======
             <button class="myButton" [routerLinkActive]="['active']" mat-menu-item (click)="sidenav.toggle()"
                 routerLink="/pages/area_derecho">
                 <mat-icon>balance</mat-icon>
@@ -111,7 +109,6 @@
                 <span>Citas</span>
             </button>
             <mat-divider></mat-divider>
->>>>>>> e239984075ad5572312f2b25ad596f7d291cc56f
         </mat-sidenav> 
 
         <mat-sidenav-content>

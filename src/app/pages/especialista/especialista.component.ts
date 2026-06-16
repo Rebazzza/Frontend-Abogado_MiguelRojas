@@ -1,19 +1,20 @@
 import { Component, effect, inject, OnInit, signal, untracked, viewChild } from '@angular/core';
 import { EspecialistaService } from '../../services/especialista.service';
 import { Especialista } from '../../model/especialista';
+
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterOutlet } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { switchMap, tap } from 'rxjs';
-
-// 🌟 SOLUCIÓN AL ERROR 2: Importar los módulos del Dialog y los Iconos de Material
-import { MatIconModule } from '@angular/material/icon'; 
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EspecialistaDialogComponent } from './especialista-dialog/especialista-dialog.component';
+
 
 @Component({
   selector: 'app-especialista',
@@ -27,21 +28,22 @@ import { EspecialistaDialogComponent } from './especialista-dialog/especialista-
     MatButtonModule,
     MatSnackBarModule,
     MatDialogModule,
-    MatIconModule // 🌟 Agregado aquí para que el HTML reconozca <mat-icon>
-  ],
+    MatIconModule,
+    RouterOutlet
+],
   templateUrl: './especialista.component.html',
   styleUrl: './especialista.component.css',
 })
 export class EspecialistaComponent implements OnInit {
   private readonly especialistaService = inject(EspecialistaService);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly dialog = inject(MatDialog); // 🌟 Inyección para abrir modales
+  private readonly dialog = inject(MatDialog); 
 
   protected $dataSource = signal(new MatTableDataSource<Especialista>());
   protected $paginator = viewChild(MatPaginator);
   protected $sort = viewChild(MatSort);
 
-  protected displayedColumns: string[] = ['idEspecialista', 'nombre', 'descripcion', 'telefono', 'correo', 'acciones'];
+  protected displayedColumns: string[] = ['idEspecialista', 'nombre', 'descripcion', 'estado', 'dni', 'disponibilidad','telefono','correo','acciones'];
 
   constructor() {
     this.initializeEffects();
@@ -76,14 +78,14 @@ export class EspecialistaComponent implements OnInit {
     });
   }
 
-  // 🌟 SOLUCIÓN AL ERROR 1: Crear el método openDialog que invoca el HTML
+  
   openDialog(especialista?: Especialista): void {
     const dialogRef = this.dialog.open(EspecialistaDialogComponent, {
       width: '650px',
-      data: especialista // Si va vacío es para crear, si lleva objeto es para editar
+      data: especialista 
     });
 
-    // Al cerrarse el modal, refrescamos la tabla si hubo un registro o cambio
+    
     dialogRef.afterClosed().subscribe(() => {
       this.listarEspecialistas();
     });

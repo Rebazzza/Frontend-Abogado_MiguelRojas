@@ -42,7 +42,7 @@ export class UsuarioDialogComponent implements OnInit { // 🌟 Implementa OnIni
     // 2. Construimos el esqueleto del Formulario Reactivo con sus validaciones
     this.form = new FormGroup({
       idUsuario: new FormControl(this.data?.idUsuario ?? null),
-      nombre: new FormControl(this.data?.nombre ?? '', [Validators.required]),
+      nombre: new FormControl(this.data?.username  ?? '', [Validators.required]),
       rol: new FormControl(this.data?.rol ?? '', [Validators.required]),
       // La contraseña es obligatoria solo si estamos creando un nuevo usuario
       password: new FormControl(this.data?.password ?? '', this.edicion ? [] : [Validators.required])

@@ -11,9 +11,9 @@
     
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>Nombre de Usuario</mat-label>
-      <input matInput formControlName="nombre" placeholder="Ej. Juan Pérez">
+      <input matInput formControlName="username" placeholder="Ej. Juan Pérez">
       <mat-icon matSuffix>person</mat-icon>
-      @if (form.get('nombre')?.hasError('required')) {
+      @if (form.get('username')?.hasError('required')) {
         <mat-error>El nombre es obligatorio</mat-error>
       }
     </mat-form-field>

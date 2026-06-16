@@ -1,1 +1,64 @@
-<h1>Pago works</h1>
+<router-outlet></router-outlet>
+
+<mat-form-field appearance="outline" style="margin: 20px 0 10px 20px; width: calc(100% - 40px); max-width: 400px;">
+  <mat-label>Filtrar Pagos</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Juan" #input>
+</mat-form-field>
+
+<div class="mat-elevation-z8" style="margin: 0 20px 20px 20px;">
+  <table mat-table [dataSource]="$dataSource()" matSort>
+
+    <ng-container matColumnDef="idPago">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let row"> {{row.idPago}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="monto">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
+      <td mat-cell *matCellDef="let row"> {{row.monto}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fechaPago">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Pago </th>
+      <td mat-cell *matCellDef="let row"> {{row.fechaPago}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="metodoPago">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Método de Pago </th>
+      <td mat-cell *matCellDef="let row"> {{row.metodoPago}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estadoPago">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado del Pago </th>
+      <td mat-cell *matCellDef="let row"> {{row.estadoPago}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let row"> 
+        <button mat-icon-button color="primary" (click)="openDialog(row)" title="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button color="warn" (click)="delete(row.idPago)" title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>  
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="8" style="text-align: center; padding: 15px;">
+        No hay datos que coincidan con el filtro "{{input.value}}"
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página de expedientes"></mat-paginator>
+</div>
+
+<button mat-fab color="primary" style="position: fixed; bottom: 20px; right: 20px;" (click)="openDialog()" title="Registrar nuevo expediente">
+  <mat-icon>add</mat-icon>
+</button>

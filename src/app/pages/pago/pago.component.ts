@@ -14,10 +14,12 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { switchMap, tap } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { pago } from '../../model/pago';
+import { ClienteDialogComponent } from '../cliente/cliente-dialog/cliente-dialog.component';
+
 
 
 @Component({
-  selector: 'app-expediente',
+  selector: 'app-pago',
   standalone: true,
   imports: [
     MatTableModule,
@@ -45,7 +47,7 @@ export class PagoComponent implements OnInit {
   protected $sort = viewChild(MatSort);
 
   // Columnas añadidas y ordenadas igual que el HTML
-  protected displayedColumns: string[] = ['idExpediente', 'titulo', 'tipoExpediente', 'resumenExpediente', 'victima', 'victimario', 'fechaInicio', 'fechaCierre','estadoExpediente','pdfExpediente'];
+  protected displayedColumns: string[] = ['idPago', 'monto', 'fechaPago', 'metodoPago', 'estadoPago'];
 
   constructor() {
     this.initializeEffects();
@@ -58,7 +60,7 @@ export class PagoComponent implements OnInit {
   private listarPagos(): void {
     this.PagoService.findAll().subscribe({
       next: (data) => this.PagoService.setListChange(data),
-      error: (err) => console.error('Error al cargar expedientes', err)
+      error: (err) => console.error('Error al cargar pagos', err)
     });
   }
 
@@ -80,19 +82,19 @@ export class PagoComponent implements OnInit {
     });
   }
 
-  //openDialog(cliente?: expediente){
-    //const dialogRef = this.dialog.open(ClienteDialogComponent, {
-      //width: '650px',
-      //data: cliente
-    //});
+  openDialog(cliente?: pago){
+    const dialogRef = this.dialog.open(ClienteDialogComponent, {
+      width: '650px',
+      data: cliente
+    });
 
-    //dialogRef.afterClosed().subscribe(() => {
-     // this.listarAbogados();
-    //});
-  //}
+    dialogRef.afterClosed().subscribe(() => {
+      this.listarPagos();
+    });
+  }
 
   delete(idPago: number){
-    const ok = window.confirm('¿Estás seguro de eliminar este abogado?');
+    const ok = window.confirm('¿Estás seguro de eliminar este pago?');
     if(ok){
       this.PagoService.delete(idPago).pipe(
         switchMap(() => this.PagoService.findAll()),

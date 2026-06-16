@@ -1,1 +1,89 @@
-<h1>Expediente works</h1>
+<router-outlet></router-outlet>
+
+<mat-form-field appearance="outline" style="margin: 20px 0 10px 20px; width: calc(100% - 40px); max-width: 400px;">
+  <mat-label>Filtrar Expediente</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Juan" #input>
+</mat-form-field>
+
+<div class="mat-elevation-z8" style="margin: 0 20px 20px 20px;">
+  <table mat-table [dataSource]="$dataSource()" matSort>
+
+    <ng-container matColumnDef="idExpediente">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let row"> {{row.idExpediente}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="titulo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Título </th>
+      <td mat-cell *matCellDef="let row"> {{row.titulo}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tipoExpediente">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Expediente </th>
+      <td mat-cell *matCellDef="let row"> {{row.tipoExpediente}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="resumenExpediente">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Resumen </th>
+      <td mat-cell *matCellDef="let row"> {{row.resumenExpediente}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="victima">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Víctima </th>
+      <td mat-cell *matCellDef="let row"> {{row.victima}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="victimario">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Victimario </th>
+      <td mat-cell *matCellDef="let row"> {{row.victimario}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fechaInicio">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Inicio </th>
+      <td mat-cell *matCellDef="let row"> {{row.fechaInicio}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fechaCierre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Cierre </th>
+      <td mat-cell *matCellDef="let row"> {{row.fechaCierre}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estadoExpediente">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado del Expediente </th>
+      <td mat-cell *matCellDef="let row"> {{row.estadoExpediente}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pdfExpediente">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> PDF del Expediente </th>
+      <td mat-cell *matCellDef="let row"> {{row.pdfExpediente}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let row"> 
+        <button mat-icon-button color="primary" (click)="openDialog(row)" title="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button color="warn" (click)="delete(row.idExpediente)" title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>  
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="8" style="text-align: center; padding: 15px;">
+        No hay datos que coincidan con el filtro "{{input.value}}"
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página de expedientes"></mat-paginator>
+</div>
+
+<button mat-fab color="primary" style="position: fixed; bottom: 20px; right: 20px;" (click)="openDialog()" title="Registrar nuevo expediente">
+  <mat-icon>add</mat-icon>
+</button>

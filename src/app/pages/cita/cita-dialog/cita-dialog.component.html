@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Editar Cita' : 'Nueva Cita' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="dialog-form">
+    
+    <mat-form-field appearance="outline">
+      <mat-label>Motivo de la cita</mat-label>
+      <input matInput formControlName="motivo" placeholder="Ej. Reunión con el cliente" />
+      @if (form.get('motivo')?.hasError('required')) {
+        <mat-error>El motivo es obligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="row-fields">
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha</mat-label>
+        <input matInput type="date" formControlName="fecha" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Hora</mat-label>
+        <input matInput type="time" formControlName="hora" />
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="estado">
+        <mat-option value="Pendiente">Pendiente</mat-option>
+        <mat-option value="En Proceso">En Proceso</mat-option>
+        <mat-option value="Completada">Completada</mat-option>
+        <mat-option value="Cancelada">Cancelada</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="save()">
+    Guardar
+  </button>
+</mat-dialog-actions>

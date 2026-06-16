@@ -49,10 +49,10 @@ export class ExpedienteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listarAbogados();
+    this.listarExpedientes();
   }
 
-  private listarAbogados(): void {
+  private listarExpedientes(): void {
     this.expedienteService.findAll().subscribe({
       next: (data) => this.expedienteService.setListChange(data),
       error: (err) => console.error('Error al cargar expedientes', err)
@@ -77,19 +77,19 @@ export class ExpedienteComponent implements OnInit {
     });
   }
 
-  openDialog(cliente?: expediente){
-    const dialogRef = this.dialog.open(ClienteDialogComponent, {
+  openDialog(expediente?: expediente){
+    const dialogRef = this.dialog.open(ExpedienteDialogComponent, {
       width: '650px',
-      data: cliente
+      data: expediente
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.listarAbogados();
+      this.listarExpedientes();
     });
   }
 
   delete(idExpediente: number){
-    const ok = window.confirm('¿Estás seguro de eliminar este abogado?');
+    const ok = window.confirm('¿Estás seguro de eliminar este expediente?');
     if(ok){
       this.expedienteService.delete(idExpediente).pipe(
         switchMap(() => this.expedienteService.findAll()),

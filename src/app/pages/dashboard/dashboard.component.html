@@ -1,0 +1,73 @@
+<div class="dashboard">
+  <header class="welcome-header">
+    <div>
+      <h1>Bienvenido, {{ username() || 'Usuario' }}</h1>
+      <p class="date">{{ today | date: "fullDate" }}</p>
+    </div>
+    <img src="logo_provi.png" width="64" alt="logo" class="header-logo" />
+  </header>
+
+  @if (loading()) {
+    <div class="loading">Cargando...</div>
+  } @else {
+    <section class="stats-grid">
+      @for (card of stats(); track card.label) {
+        <mat-card class="stat-card" [style.--accent]="card.color" [routerLink]="card.route">
+          <mat-card-content>
+            <mat-icon class="stat-icon" [style.color]="card.color">{{ card.icon }}</mat-icon>
+            <div class="stat-info">
+              <span class="stat-value">{{ card.value }}</span>
+              <span class="stat-label">{{ card.label }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </section>
+
+    <div class="bottom-section">
+      <mat-card class="proximas-citas">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>event</mat-icon>
+          <mat-card-title>Próximas Citas</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (proximasCitas().length === 0) {
+            <p class="empty">No hay citas programadas</p>
+          } @else {
+            <mat-list>
+              @for (cita of proximasCitas(); track cita.cliente) {
+                <mat-list-item>
+                  <mat-icon matListItemIcon>event_available</mat-icon>
+                  <div matListItemTitle>{{ cita.cliente }}</div>
+                  <div matListItemLine>{{ cita.asunto }} — {{ cita.fecha }}</div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              }
+            </mat-list>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="acciones-rapidas">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>bolt</mat-icon>
+          <mat-card-title>Acciones rápidas</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="acciones-grid">
+          <button mat-raised-button color="primary" routerLink="/pages/caso">
+            <mat-icon>add_circle</mat-icon> Nuevo Caso
+          </button>
+          <button mat-raised-button color="accent" routerLink="/pages/cliente">
+            <mat-icon>person_add</mat-icon> Nuevo Cliente
+          </button>
+          <button mat-raised-button color="warn" routerLink="/pages/cita">
+            <mat-icon>event</mat-icon> Agendar Cita
+          </button>
+          <button mat-raised-button routerLink="/pages/abogado">
+            <mat-icon>gavel</mat-icon> Abogados
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</div>

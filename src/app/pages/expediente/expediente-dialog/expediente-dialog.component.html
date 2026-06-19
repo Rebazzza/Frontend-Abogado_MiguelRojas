@@ -1,1 +1,71 @@
-<p>expediente-dialog works!</p>
+<h2 mat-dialog-title style="margin-bottom: 10px;">
+  <mat-icon style="vertical-align: middle; margin-right: 8px;">
+    {{ edicion ? 'edit' : 'add' }}
+  </mat-icon>
+  {{ edicion ? 'Modificar Expediente' : 'Registrar Nuevo Expediente' }}
+</h2>
+
+<mat-dialog-content style="min-width: 550px; display: flex; flex-direction: column; gap: 12px; padding-top: 10px;">
+  <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 10px;">
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="titulo" placeholder="Título del expediente">
+        <mat-error *ngIf="form.get('titulo')?.hasError('required')">El título es obligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Tipo de Expediente</mat-label>
+        <input matInput formControlName="tipoExpediente" placeholder="Ej. Penal, Civil">
+        <mat-error *ngIf="form.get('tipoExpediente')?.hasError('required')">El tipo es obligatorio</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Resumen</mat-label>
+      <textarea matInput formControlName="resumenExpediente" placeholder="Resumen del expediente" rows="2"></textarea>
+    </mat-form-field>
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Víctima</mat-label>
+        <input matInput formControlName="victima" placeholder="Nombre de la víctima">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Victimario</mat-label>
+        <input matInput formControlName="victimario" placeholder="Nombre del victimario">
+      </mat-form-field>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Fecha de Inicio</mat-label>
+        <input matInput formControlName="fechaInicio" type="date">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Fecha de Cierre</mat-label>
+        <input matInput formControlName="fechaCierre" type="date">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>PDF del Expediente</mat-label>
+      <input matInput formControlName="pdfExpediente" placeholder="URL del PDF">
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="estadoExpediente" color="primary">
+      {{ form.get('estadoExpediente')?.value ? 'Activo' : 'Inactivo' }}
+    </mat-slide-toggle>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" style="padding-bottom: 15px;">
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="operate()">
+    {{ edicion ? 'Actualizar' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

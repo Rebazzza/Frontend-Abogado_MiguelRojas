@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { LoginComponent } from './pages/login/login.component';
 import { LayoutComponent } from './pages/layout/layout.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AbogadoComponent } from './pages/abogado/abogado.component';
 import { UsuarioComponent } from './pages/usuario/usuario.component';
 import { AreaDerechoComponent } from './pages/area-derecho/area-derecho.component';
@@ -21,6 +22,7 @@ export const routes: Routes = [
     component: LayoutComponent,
     canActivate: [authGuard],
     children: [
+      { path: 'dashboard', component: DashboardComponent },
       {
         path: 'abogado', component: AbogadoComponent,
         children: [
@@ -38,7 +40,7 @@ export const routes: Routes = [
       { path: 'pago', component: PagoComponent },
       { path: 'servicio_legal', component: ServicioLegalComponent },
       { path: 'expediente', component: ExpedienteComponent },
-      { path: '', redirectTo: 'abogado', pathMatch: 'full' },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

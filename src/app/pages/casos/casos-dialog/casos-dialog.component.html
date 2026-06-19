@@ -1,1 +1,35 @@
-<p>casos-dialog works!</p>
+<h2 mat-dialog-title style="margin-bottom: 10px;">
+  <mat-icon style="vertical-align: middle; margin-right: 8px;">
+    {{ edicion ? 'edit' : 'add_circle' }}
+  </mat-icon>
+  {{ edicion ? 'Modificar Caso' : 'Registrar Nuevo Caso' }}
+</h2>
+
+<mat-dialog-content style="min-width: 500px; display: flex; flex-direction: column; gap: 12px; padding-top: 10px;">
+  <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 10px;">
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="titulo" placeholder="Ej. Caso de indemnización">
+      <mat-error *ngIf="form.get('titulo')?.hasError('required')">El título es obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcion" placeholder="Descripción del caso" rows="3"></textarea>
+      <mat-error *ngIf="form.get('descripcion')?.hasError('required')">La descripción es obligatoria</mat-error>
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="estado" color="primary">
+      {{ form.get('estado')?.value ? 'Activo' : 'Inactivo' }}
+    </mat-slide-toggle>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" style="padding-bottom: 15px;">
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="operate()">
+    {{ edicion ? 'Actualizar' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

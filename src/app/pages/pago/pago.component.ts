@@ -14,7 +14,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { switchMap, tap } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { pago } from '../../model/pago';
-import { ClienteDialogComponent } from '../cliente/cliente-dialog/cliente-dialog.component';
+import { PagoDialogComponent } from './pago-dialog/pago-dialog.component';
 
 
 
@@ -82,10 +82,10 @@ export class PagoComponent implements OnInit {
     });
   }
 
-  openDialog(cliente?: pago){
-    const dialogRef = this.dialog.open(ClienteDialogComponent, {
+  openDialog(pago?: pago){
+    const dialogRef = this.dialog.open(PagoDialogComponent, {
       width: '650px',
-      data: cliente
+      data: pago
     });
 
     dialogRef.afterClosed().subscribe(() => {

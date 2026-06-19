@@ -1,7 +1,7 @@
 <router-outlet></router-outlet>
 
 <mat-form-field appearance="outline" style="margin: 20px 0 10px 20px; width: calc(100% - 40px); max-width: 400px;">
-  <mat-label>Filtrar Clientes</mat-label>
+  <mat-label>Filtrar Citas</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Juan" #input>
 </mat-form-field>
 
@@ -63,7 +63,7 @@
           <mat-icon>edit</mat-icon>
         </button>
 
-        <button mat-icon-button color="warn" (click)="delete(row.idAbogado)" title="Eliminar">
+        <button mat-icon-button color="warn" (click)="delete(row.idCita)" title="Eliminar">
           <mat-icon>delete</mat-icon>
         </button>  
       </td>
@@ -79,9 +79,9 @@
     </tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página de abogados"></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página de citas"></mat-paginator>
 </div>
 
-<button mat-fab color="primary" style="position: fixed; bottom: 20px; right: 20px;" (click)="openDialog()" title="Registrar nuevo abogado">
+<button mat-fab color="primary" style="position: fixed; bottom: 20px; right: 20px;" (click)="openDialog()" title="Registrar nueva cita">
   <mat-icon>add</mat-icon>
 </button>

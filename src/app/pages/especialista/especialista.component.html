@@ -1,7 +1,7 @@
 <router-outlet></router-outlet>
 
 <mat-form-field appearance="outline" style="margin: 20px 0 10px 20px; width: calc(100% - 40px); max-width: 400px;">
-  <mat-label>Filtrar Especialista</mat-label>
+  <mat-label>Filtrar Especialistas</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Alberto" #input>
 </mat-form-field>
 
@@ -54,7 +54,7 @@
           <mat-icon>edit</mat-icon>
         </button>
 
-        <button mat-icon-button color="warn" (click)="delete(row.idExpediente)" title="Eliminar">
+        <button mat-icon-button color="warn" (click)="delete(row.idEspecialista)" title="Eliminar">
           <mat-icon>delete</mat-icon>
         </button>  
       </td>
@@ -70,9 +70,9 @@
     </tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página de expedientes"></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página de especialistas"></mat-paginator>
 </div>
 
-<button mat-fab color="primary" style="position: fixed; bottom: 20px; right: 20px;" (click)="openDialog()" title="Registrar nuevo expediente">
+<button mat-fab color="primary" style="position: fixed; bottom: 20px; right: 20px;" (click)="openDialog()" title="Registrar nuevo especialista">
   <mat-icon>add</mat-icon>
 </button>

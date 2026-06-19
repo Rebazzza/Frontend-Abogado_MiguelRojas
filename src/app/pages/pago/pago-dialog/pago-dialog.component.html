@@ -1,1 +1,48 @@
-<p>pago-dialog works!</p>
+<h2 mat-dialog-title style="margin-bottom: 10px;">
+  <mat-icon style="vertical-align: middle; margin-right: 8px;">
+    {{ edicion ? 'edit' : 'add_card' }}
+  </mat-icon>
+  {{ edicion ? 'Modificar Pago' : 'Registrar Nuevo Pago' }}
+</h2>
+
+<mat-dialog-content style="min-width: 500px; display: flex; flex-direction: column; gap: 12px; padding-top: 10px;">
+  <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 10px;">
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Monto</mat-label>
+        <input matInput formControlName="monto" type="number" step="0.01" placeholder="0.00">
+        <mat-error *ngIf="form.get('monto')?.hasError('required')">El monto es obligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Método de Pago</mat-label>
+        <mat-select formControlName="metodoPago">
+          <mat-option value="Efectivo">Efectivo</mat-option>
+          <mat-option value="Tarjeta">Tarjeta</mat-option>
+          <mat-option value="Transferencia">Transferencia</mat-option>
+          <mat-option value="Cheque">Cheque</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('metodoPago')?.hasError('required')">El método es obligatorio</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Fecha de Pago</mat-label>
+      <input matInput formControlName="fechaPago" type="date">
+      <mat-error *ngIf="form.get('fechaPago')?.hasError('required')">La fecha es obligatoria</mat-error>
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="estadoPago" color="primary">
+      {{ form.get('estadoPago')?.value ? 'Pagado' : 'Pendiente' }}
+    </mat-slide-toggle>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" style="padding-bottom: 15px;">
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="operate()">
+    {{ edicion ? 'Actualizar' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

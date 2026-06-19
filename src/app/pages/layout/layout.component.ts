@@ -38,6 +38,7 @@ export class LayoutComponent {
   protected searchQuery = signal('');
 
   protected menuItems: MenuItem[] = [
+    { icon: 'dashboard', label: 'Dashboard', route: '/pages/dashboard' },
     { icon: 'gavel', label: 'Abogados', route: '/pages/abogado' },
     { icon: 'balance', label: 'Audiencias', route: '/pages/audiencia' },
     { icon: 'work', label: 'Casos', route: '/pages/caso' },
@@ -48,6 +49,7 @@ export class LayoutComponent {
     { icon: 'person', label: 'Usuario', route: '/pages/usuario' },
     { icon: 'balance', label: 'Áreas de Derecho', route: '/pages/area_derecho' },
     { icon: 'event_available', label: 'Citas', route: '/pages/cita' },
+    { icon: 'handyman', label: 'Servicio Legal', route: '/pages/servicio_legal' },
   ];
 
   protected filteredItems = computed(() => {

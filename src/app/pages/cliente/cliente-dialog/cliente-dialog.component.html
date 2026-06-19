@@ -1,1 +1,74 @@
-<p>cliente-dialog works!</p>
+<h2 mat-dialog-title style="margin-bottom: 10px;">
+  <mat-icon style="vertical-align: middle; margin-right: 8px;">
+    {{ edicion ? 'edit' : 'person_add' }}
+  </mat-icon>
+  {{ edicion ? 'Modificar Cliente' : 'Registrar Nuevo Cliente' }}
+</h2>
+
+<mat-dialog-content style="min-width: 500px; display: flex; flex-direction: column; gap: 12px; padding-top: 10px;">
+  <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 10px;">
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="Nombre del cliente">
+        <mat-error *ngIf="form.get('nombre')?.hasError('required')">El nombre es obligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="tipoCliente">
+          <mat-option value="Natural">Natural</mat-option>
+          <mat-option value="Jurídico">Jurídico</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcion" placeholder="Breve descripción" rows="2"></textarea>
+    </mat-form-field>
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>DNI</mat-label>
+        <input matInput formControlName="dni" placeholder="12345678" maxlength="8">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>RUC</mat-label>
+        <input matInput formControlName="RUC" placeholder="20123456789">
+      </mat-form-field>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" placeholder="999888777">
+        <mat-error *ngIf="form.get('telefono')?.hasError('required')">El teléfono es obligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Correo</mat-label>
+        <input matInput formControlName="correo" type="email" placeholder="correo@ejemplo.com">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Dirección</mat-label>
+      <input matInput formControlName="direccion" placeholder="Av. Principal 123">
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="estado" color="primary">
+      {{ form.get('estado')?.value ? 'Activo' : 'Inactivo' }}
+    </mat-slide-toggle>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" style="padding-bottom: 15px;">
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="operate()">
+    {{ edicion ? 'Actualizar' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

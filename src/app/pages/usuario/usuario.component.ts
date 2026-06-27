@@ -42,7 +42,7 @@ export class UsuarioComponent implements OnInit {
 
   protected $usuarios = this.usuarioService.$listChange;
   
-  protected displayedColumns: string[] = ['idUsuario', 'username', 'rol', 'acciones'];
+  protected displayedColumns: string[] = ['idUsuario', 'username', 'idrol', 'acciones'];
 
   constructor() {
     this.initializeEffects();

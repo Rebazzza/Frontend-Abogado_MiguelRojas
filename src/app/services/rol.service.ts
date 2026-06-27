@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { Audiencia } from '../model/audiencia';
+import { rol } from '../model/rol';
 import { GenericSignalService } from './generic-signal.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AudienciaService extends GenericSignalService<Audiencia> {
-  protected override url: string = `${environment.HOST}/audiencias`;
+export class RolService extends GenericSignalService<rol> {
+  protected override url: string = `${environment.HOST}/roles`;
   listPageable(p:number,s:number){
     return this.http.get<any>(`${this.url}/pageable?page=${p}&size=${s}`);
   }

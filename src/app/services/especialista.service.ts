@@ -8,4 +8,7 @@ import { GenericSignalService } from './generic-signal.service';
 })
 export class EspecialistaService extends GenericSignalService<Especialista> {
   protected override url: string = `${environment.HOST}/especialistas`;
+  listPageable(p:number,s:number){
+    return this.http.get<any>(`${this.url}/pageable?page=${p}&size=${s}`);
+  }
 }

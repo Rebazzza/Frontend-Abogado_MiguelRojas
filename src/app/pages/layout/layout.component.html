@@ -1,45 +1,18 @@
 <div class="example-container">
-  <mat-toolbar class="example-toolbar">
-    <button mat-icon-button (click)="sidenav.toggle()">
-      @if (!sidenav.opened) {
-        <mat-icon>menu</mat-icon>
-      } @else {
-        <mat-icon>close</mat-icon>
-      }
-    </button>
-
-    <span>MIGUEL ROJAS</span>
-
-    <span class="example-spacer"></span>
-
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>account_box</mat-icon>
-        <span>My account</span>
-      </button>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Cerrar sesión</span>
-      </button>
-    </mat-menu>
-  </mat-toolbar>
-
   <mat-sidenav-container class="example-sidenav-container">
-    <mat-sidenav #sidenav style="width: 250px" mode="side" opened>
-
-      <img src="logo_provi.png" width="128" style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
-      <mat-divider></mat-divider>
+    
+    <mat-sidenav #sidenav class="juridibase-sidenav" mode="side" opened>
+      
+      <div class="sidebar-header">
+        <span class="logo-text">JURIDIBASE</span>
+      </div>
 
       <div class="search-box">
         <mat-icon class="search-icon">search</mat-icon>
         <input
           class="search-input"
           type="text"
-          placeholder="Buscar en el menú..."
+          placeholder="Buscar en el men..."
           [ngModel]="searchQuery()"
           (ngModelChange)="searchQuery.set($event)"
         />
@@ -49,31 +22,47 @@
           </button>
         }
       </div>
-      <mat-divider></mat-divider>
 
-      @for (item of filteredItems(); track item.route) {
-        <button
-          class="myButton"
-          [routerLinkActive]="['active']"
-          mat-menu-item
-          (click)="sidenav.toggle()"
-          [routerLink]="item.route"
-        >
-          <mat-icon>{{ item.icon }}</mat-icon>
-          <span>{{ item.label }}</span>
+      <div class="menu-items-container">
+        @for (item of filteredItems(); track item.route) {
+          <button
+            class="menu-item-btn"
+            [routerLinkActive]="['active']"
+            [routerLink]="item.route"
+          >
+            <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
+            <span class="menu-label">{{ item.label }}</span>
+          </button>
+        }
+
+        @if (!hasFilteredResults()) {
+          <div class="no-results">
+            <span>Sin resultados</span>
+          </div>
+        }
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="logout-btn" (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Cerrar Sesión</span>
         </button>
-        <mat-divider></mat-divider>
-      }
-
-      @if (!hasFilteredResults()) {
-        <div class="no-results">
-          <span>Sin resultados</span>
-        </div>
-      }
+      </div>
     </mat-sidenav>
 
-    <mat-sidenav-content>
-      <router-outlet></router-outlet>
+    <mat-sidenav-content class="main-content">
+      
+      <div class="top-user-bar">
+        <div class="user-profile">
+          <mat-icon>account_circle</mat-icon>
+          <span class="user-name">Miguel Rojas</span>
+        </div>
+      </div>
+
+      <div class="view-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+      
     </mat-sidenav-content>
 
   </mat-sidenav-container>

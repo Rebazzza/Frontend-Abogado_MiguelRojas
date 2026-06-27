@@ -1,7 +1,8 @@
-  import { Component, effect, inject, signal, untracked, viewChild, OnInit } from '@angular/core';
+  import { Component,computed, effect, inject, signal, untracked, viewChild, OnInit } from '@angular/core';
   import { Abogado } from '../../model/abogado'; // Asegúrate de que la clase empiece con mayúscula o igual a tu modelo
   import { AbogadoService } from '../../services/abogado.service';
   import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+  import { toObservable, toSignal } from '@angular/core/rxjs-interop';
   import { MatFormFieldModule } from '@angular/material/form-field';
   import { MatInputModule } from '@angular/material/input';
   import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -58,13 +59,15 @@ export class AbogadoComponent implements OnInit {
       error: (err) => console.error('Error al cargar abogados', err)
     });
   }
-
+  protected $categories = computed(() => this.$response()?.content ?? []);
+  protected $totalElements = computed(() => this.$response()?.page?.totalElements ?? 0);
   private initializeEffects(){
     effect(() => {
-      const data = this.abogadoService.$listChange();
+      const data = this.$categories();
+      const p = this.$paginator();
+      const s = this.$sort();
       const ds = this.$dataSource();
       ds.data = data;
-      ds.paginator = this.$paginator() ?? null;
       ds.sort = this.$sort() ?? null;
     }); 
 
@@ -76,7 +79,23 @@ export class AbogadoComponent implements OnInit {
       }
     });
   }
+  protected $pageRequest = signal({page: 0, size: 10});
 
+  //Signal que escucha los cambios en la paginacion y ejecuta la consulta al backend cada vez que haya un cambio en la paginacion
+  private readonly $response = toSignal(
+    //toObservable tiene effect interno, que desencadena todo lo de abajo cada vez que haya un cambio en $pageRequest
+    toObservable(this.$pageRequest).pipe(
+      switchMap( ({page, size}) => this.abogadoService.listPageable(page, size) ),
+      tap(data => this.abogadoService.setListChange(data.content)),
+    )
+  );
+
+  //Signals calculados para obtener los datos y el total de elementos de la respuesta
+  
+  
+
+
+  
   openDialog(abogado?: Abogado){
     const dialogRef = this.dialog.open(AbogadoDialogComponent, {
       width: '650px',
@@ -102,5 +121,8 @@ export class AbogadoComponent implements OnInit {
   applyFilter(e: Event){ 
     const filterValue = (e.target as HTMLInputElement).value;
     this.$dataSource().filter = filterValue.trim().toLowerCase();
+  }
+  changePage(e: any){
+    this.$pageRequest.set({page: e.pageIndex, size: e.pageSize});
   }
 }

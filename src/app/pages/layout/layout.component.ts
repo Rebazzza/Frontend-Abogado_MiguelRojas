@@ -37,7 +37,7 @@ export class LayoutComponent {
 
   protected searchQuery = signal('');
 
-  protected menuItems: MenuItem[] = [
+  protected menuItemsAdmin: MenuItem[] = [
     { icon: 'dashboard', label: 'Dashboard', route: '/pages/dashboard' },
     { icon: 'gavel', label: 'Abogados', route: '/pages/abogado' },
     { icon: 'balance', label: 'Audiencias', route: '/pages/audiencia' },
@@ -51,11 +51,23 @@ export class LayoutComponent {
     { icon: 'event_available', label: 'Citas', route: '/pages/cita' },
     { icon: 'handyman', label: 'Servicio Legal', route: '/pages/servicio_legal' },
   ];
+  protected menuItemsAbogado: MenuItem[] = [
+    { icon: 'dashboard', label: 'Dashboard', route: '/pages/dashboard' },
+    { icon: 'balance', label: 'Audiencias', route: '/pages/audiencia' },
+    { icon: 'work', label: 'Casos', route: '/pages/caso' },
+    { icon: 'people', label: 'Clientes', route: '/pages/cliente' },
+    { icon: 'psychology', label: 'Especialista', route: '/pages/especialista' },
+    { icon: 'folder_open', label: 'Expediente', route: '/pages/expediente' },
+    { icon: 'payments', label: 'Pagos', route: '/pages/pago' },
+    { icon: 'balance', label: 'Áreas de Derecho', route: '/pages/area_derecho' },
+    { icon: 'event_available', label: 'Citas', route: '/pages/cita' },
+    { icon: 'handyman', label: 'Servicio Legal', route: '/pages/servicio_legal' },
+  ];
 
   protected filteredItems = computed(() => {
     const q = this.searchQuery().toLowerCase().trim();
-    if (!q) return this.menuItems;
-    return this.menuItems.filter((item) => item.label.toLowerCase().includes(q));
+    if (!q) return this.menuItemsAbogado;
+    return this.menuItemsAbogado.filter((item) => item.label.toLowerCase().includes(q));
   });
 
   protected hasFilteredResults = computed(() => this.filteredItems().length > 0);

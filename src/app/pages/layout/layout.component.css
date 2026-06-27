@@ -1,70 +1,182 @@
+/* Contenedor Principal */
 .example-container {
-  display: flex;
-  flex-direction: column;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .example-sidenav-container {
-  flex: 1;
+  height: 100%;
+  width: 100%;
 }
 
-.example-spacer {
-  flex: 1 1 auto;
+/* Estilo del Sidenav Lateral */
+.juridibase-sidenav {
+  width: 260px;
+  background-color: #2c364c !important; /* Azul oscuro idéntico a la imagen */
+  color: #ffffff !important;
+  display: flex;
+  flex-direction: column;
+  border-right: none !important;
 }
 
-.active {
-  background-color: #dcdcdcc1;
+/* Cabecera JURIDIBASE */
+.sidebar-header {
+  padding: 24px 20px;
+  background-color: #21293a; /* Un tono un poco más oscuro para resaltar */
+  text-align: left;
 }
 
-.myButton:focus {
-  box-shadow: 0 0 rgba(255, 255, 255, 1) !important;
-  transition: none !important;
-  background-color: rgba(255, 255, 255, 1) !important;
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 1) !important;
+.logo-text {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #ffffff;
 }
 
+/* Buscador Adaptado */
 .search-box {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 15px 20px;
+  padding: 6px 12px;
+  border-radius: 6px;
 }
 
 .search-icon {
-  color: #888;
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+  color: #a0aec0;
+  margin-right: 8px;
 }
 
 .search-input {
-  border: none;
-  outline: none;
-  flex: 1;
-  font-size: 14px;
   background: transparent;
+  border: none;
+  color: #ffffff;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+}
+
+.search-input::placeholder {
+  color: #a0aec0;
 }
 
 .search-clear {
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
+  color: #a0aec0 !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
 }
 
-.search-clear .mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  line-height: 18px;
+/* Botones del Menú */
+.menu-items-container {
+  flex: 1;
+  padding: 10px 0;
+}
+
+.menu-item-btn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  color: #cbd5e1;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 15px;
+}
+
+.menu-item-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.menu-item-btn.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-left: 4px solid #3b82f6; /* Indicador azul de pestaña activa */
+}
+
+.menu-icon {
+  margin-right: 15px;
+  color: #94a3b8;
+}
+
+.menu-item-btn.active .menu-icon {
+  color: #ffffff;
+}
+
+/* Footer / Cerrar Sesión */
+.sidebar-footer {
+  padding: 15px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logout-btn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  color: #ef4444; /* Color rojo sutil para salida */
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.logout-btn mat-icon {
+  margin-right: 15px;
+}
+
+/* Área de Contenido de la Derecha */
+.main-content {
+  background-color: #f8fafc !important; /* Fondo gris claro impecable */
+}
+
+/* Barra Superior de Usuario */
+.top-user-bar {
+  height: 65px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  color: #475569;
+}
+
+.user-profile mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  margin-right: 8px;
+  color: #64748b;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Envoltura para las páginas internas */
+.view-wrapper {
+  padding: 30px;
 }
 
 .no-results {
-  padding: 16px;
+  padding: 20px;
+  color: #94a3b8;
   text-align: center;
-  color: #888;
   font-size: 14px;
 }

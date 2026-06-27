@@ -10,4 +10,7 @@ import { GenericSignalService } from './generic-signal.service';
 export class ClienteService extends GenericSignalService<Cliente> {
   //private url = 'http://localhost:9090/categories';
   protected override url:string = `${environment.HOST}/clientes`;
+  listPageable(p:number,s:number){
+    return this.http.get<any>(`${this.url}/pageable?page=${p}&size=${s}`);
+  }
 }

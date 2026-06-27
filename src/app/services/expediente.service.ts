@@ -9,4 +9,7 @@ import { GenericSignalService } from './generic-signal.service';
 })
 export class ExpedienteService extends GenericSignalService<expediente> {
   protected override url: string = `${environment.HOST}/expedientes`;
+  listPageable(p:number,s:number){
+    return this.http.get<any>(`${this.url}/pageable?page=${p}&size=${s}`);
+  }
 }

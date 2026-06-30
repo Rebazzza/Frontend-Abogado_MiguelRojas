@@ -1,22 +1,28 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ExpedienteService } from '../../../services/expediente.service';
+import { CasoService } from '../../../services/casos.service';
 import { expediente } from '../../../model/expediente';
+import { Casos } from '../../../model/Caso';
 import { switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-expediente-dialog',
   standalone: true,
   imports: [
+    CommonModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatButtonModule,
     MatIconModule,
     MatSlideToggleModule,
@@ -26,11 +32,14 @@ import { switchMap, tap } from 'rxjs';
 })
 export class ExpedienteDialogComponent implements OnInit {
   private readonly expedienteService = inject(ExpedienteService);
+  private readonly casoService = inject(CasoService);
+  private readonly cdr = inject(ChangeDetectorRef);
   protected readonly data: expediente = inject(MAT_DIALOG_DATA);
   private readonly dialogRef = inject(MatDialogRef<ExpedienteDialogComponent>);
 
   protected form!: FormGroup;
   protected edicion: boolean = false;
+  protected casos: Casos[] = [];
 
   ngOnInit(): void {
     this.edicion = this.data != null && (this.data.idExPediente ?? 0) > 0;
@@ -46,6 +55,12 @@ export class ExpedienteDialogComponent implements OnInit {
       fechaCierre: new FormControl(this.data?.fechaCierre ?? ''),
       estadoExpediente: new FormControl(this.data?.estadoExpediente ?? true),
       pdfExpediente: new FormControl(this.data?.pdfExpediente ?? ''),
+      idCaso: new FormControl(this.data?.idCaso ?? null, [Validators.required]),
+    });
+
+    this.casoService.findAll().subscribe((data) => {
+      this.casos = data;
+      this.cdr.detectChanges();
     });
   }
 

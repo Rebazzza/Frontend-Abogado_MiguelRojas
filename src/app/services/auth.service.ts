@@ -4,6 +4,10 @@ import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
+interface LoginResponse {
+  access_token: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,18 +22,18 @@ export class AuthService {
   readonly $username = this._username.asReadonly();
 
   constructor() {
-    const stored = localStorage.getItem('loggedIn');
-    this._loggedIn.set(stored === 'true');
+    const token = sessionStorage.getItem(environment.TOKEN_NAME);
+    this._loggedIn.set(!!token);
     this._username.set(localStorage.getItem('username') ?? '');
   }
 
-  login(username: string, password: string): Observable<boolean> {
-    return this.http.post<boolean>(`${environment.HOST}/login`, { username, password }).pipe(
+  login(username: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${environment.HOST}/login`, { username, password }).pipe(
       tap((response) => {
-        if (response) {
+        if (response?.access_token) {
+          sessionStorage.setItem(environment.TOKEN_NAME, response.access_token);
           this._loggedIn.set(true);
           this._username.set(username);
-          localStorage.setItem('loggedIn', 'true');
           localStorage.setItem('username', username);
         }
       })
@@ -39,7 +43,7 @@ export class AuthService {
   logout(): void {
     this._loggedIn.set(false);
     this._username.set('');
-    localStorage.removeItem('loggedIn');
+    sessionStorage.removeItem(environment.TOKEN_NAME);
     localStorage.removeItem('username');
     this.router.navigate(['/login']);
   }

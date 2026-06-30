@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal, untracked, viewChild, OnInit } from '@angular/core';
-import { usuario } from '../../model/usuario';
+import { Usuario } from '../../model/usuario';
 import { UsuarioService } from '../../services/usuario.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -36,13 +36,13 @@ export class UsuarioComponent implements OnInit {
   private readonly snackBar = inject(MatSnackBar);
   private readonly dialog = inject(MatDialog);
 
-  protected $dataSource = signal(new MatTableDataSource<usuario>());
+  protected $dataSource = signal(new MatTableDataSource<Usuario>());
   protected $paginator = viewChild(MatPaginator);
   protected $sort = viewChild(MatSort);
 
   protected $usuarios = this.usuarioService.$listChange;
   
-  protected displayedColumns: string[] = ['idUsuario', 'username', 'idrol', 'acciones'];
+  protected displayedColumns: string[] = ['idUsuario', 'username', 'rolName', 'acciones'];
 
   constructor() {
     this.initializeEffects();
@@ -84,7 +84,7 @@ export class UsuarioComponent implements OnInit {
     });
   }
 
-  openDialog(usuario?: usuario){
+  openDialog(usuario?: Usuario){
     const dialogRef = this.dialog.open(UsuarioDialogComponent, {
       width: '650px',
       data: usuario

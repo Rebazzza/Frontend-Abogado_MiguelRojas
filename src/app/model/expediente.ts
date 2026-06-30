@@ -15,4 +15,5 @@ export class expediente {
     estadoExpediente: boolean = false;
     
     pdfExpediente: string;
+    idCaso: number;
 }

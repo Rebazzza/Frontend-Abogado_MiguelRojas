@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit {
 
             this.proximasCitas.set(
               activas.slice(0, 5).map((c) => ({
-                cliente: c.nombreCliente,
+                cliente: c.idCliente.toString(),
                 asunto: c.asuntoLegal,
                 fecha: new Date(c.fechaHora).toLocaleDateString('es-PE', {
                   day: 'numeric',

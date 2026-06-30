@@ -1,7 +1,6 @@
 import { Component, effect, inject, OnInit, signal, untracked, viewChild } from '@angular/core';
 import { CitaService } from '../../services/cita.service';
 
-
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -38,27 +37,25 @@ export class CitaComponent implements OnInit {
   private readonly citaService = inject(CitaService);
   private readonly snackBar = inject(MatSnackBar);
   private readonly dialog = inject(MatDialog);
-  
 
   protected $dataSource = signal(new MatTableDataSource<cita>());
   protected $paginator = viewChild(MatPaginator);
   protected $sort = viewChild(MatSort);
 
-  // Columnas añadidas y ordenadas igual que el HTML
-  protected displayedColumns: string[] = ['idCita', 'nombreCliente', 'abogadoAsignado', 'asuntoLegal', 'detallesAdicionales', 'fechaHora', 'activa','Acciones'];
+  protected displayedColumns: string[] = ['idCita', 'idCliente', 'idAbogado', 'asuntoLegal', 'detallesAdicionales', 'fechaHora', 'activa', 'acciones'];
 
   constructor() {
     this.initializeEffects();
   }
 
   ngOnInit(): void {
-    this.listarAbogados();
+    this.listarCitas();
   }
 
-  private listarAbogados(): void {
+  private listarCitas(): void {
     this.citaService.findAll().subscribe({
       next: (data) => this.citaService.setListChange(data),
-      error: (err) => console.error('Error al cargar clientes', err)
+      error: (err) => console.error('Error al cargar citas', err)
     });
   }
 
@@ -87,12 +84,12 @@ export class CitaComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.listarAbogados();
+      this.listarCitas();
     });
   }
 
   delete(idCita: number){
-    const ok = window.confirm('¿Estás seguro de eliminar este abogado?');
+    const ok = window.confirm('¿Estás seguro de eliminar esta cita?');
     if(ok){
       this.citaService.delete(idCita).pipe(
         switchMap(() => this.citaService.findAll()),

@@ -1,32 +1,64 @@
-<h2 mat-dialog-title>{{ edicion ? 'Editar Especialista' : 'Registrar Especialista' }}</h2>
+<h2 mat-dialog-title style="margin-bottom: 10px;">
+  <mat-icon style="vertical-align: middle; margin-right: 8px;">
+    {{ edicion ? 'edit_note' : 'person_add' }}
+  </mat-icon>
+  {{ edicion ? 'Modificar Especialista' : 'Registrar Nuevo Especialista' }}
+</h2>
 
-<mat-dialog-content>
-  <form [formGroup]="form" class="example-form">
-    
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Nombre Completo</mat-label>
-      <input matInput formControlName="nombre">
-    </mat-form-field>
+<mat-dialog-content style="min-width: 400px; display: flex; flex-direction: column; gap: 12px; padding-top: 10px;">
+  <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 10px;">
 
-    <mat-form-field appearance="outline" class="full-width">
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Nombre Completo</mat-label>
+        <input matInput formControlName="nombre">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>DNI</mat-label>
+        <input matInput formControlName="dni" maxlength="8">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>Descripción / Especialidad</mat-label>
       <textarea matInput formControlName="descripcion"></textarea>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Teléfono</mat-label>
-      <input matInput formControlName="telefono">
-    </mat-form-field>
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono">
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Correo Electrónico</mat-label>
-      <input matInput formControlName="correo" type="email">
-    </mat-form-field>
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Correo Electrónico</mat-label>
+        <input matInput formControlName="correo" type="email">
+      </mat-form-field>
+    </div>
 
-    </form>
+    <div style="display: flex; gap: 10px; align-items: flex-start;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          <mat-option value="ACTIVO">Activo</mat-option>
+          <mat-option value="INACTIVO">Inactivo</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Disponibilidad</mat-label>
+        <mat-select formControlName="disponibilidad">
+          <mat-option [value]="true">Disponible</mat-option>
+          <mat-option [value]="false">No Disponible</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" style="padding-bottom: 15px;">
   <button mat-button (click)="close()">Cancelar</button>
   <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="operate()">
     {{ edicion ? 'Actualizar' : 'Guardar' }}

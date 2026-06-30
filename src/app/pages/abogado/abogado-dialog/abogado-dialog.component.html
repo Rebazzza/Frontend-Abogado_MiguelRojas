@@ -42,6 +42,15 @@
       <input matInput formControlName="especialidad" placeholder="Ej. Derecho Penal, Civil">
     </mat-form-field>
 
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Usuario</mat-label>
+      <mat-select formControlName="idUsuario">
+        @for (u of usuarios; track u.idUsuario) {
+          <mat-option [value]="u.idUsuario">{{ u.username }} - {{ u.rolName }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
   </form>
 </mat-dialog-content>
 

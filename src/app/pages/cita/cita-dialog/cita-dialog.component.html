@@ -1,44 +1,58 @@
-<h2 mat-dialog-title>{{ isEdit ? 'Editar Cita' : 'Nueva Cita' }}</h2>
+<h2 mat-dialog-title style="margin-bottom: 10px;">
+  <mat-icon style="vertical-align: middle; margin-right: 8px;">
+    {{ edicion ? 'edit_note' : 'event' }}
+  </mat-icon>
+  {{ edicion ? 'Modificar Cita' : 'Registrar Nueva Cita' }}
+</h2>
 
-<mat-dialog-content>
-  <form [formGroup]="form" class="dialog-form">
-    
-    <mat-form-field appearance="outline">
-      <mat-label>Motivo de la cita</mat-label>
-      <input matInput formControlName="motivo" placeholder="Ej. Reunión con el cliente" />
-      @if (form.get('motivo')?.hasError('required')) {
-        <mat-error>El motivo es obligatorio</mat-error>
-      }
+<mat-dialog-content style="min-width: 500px; display: flex; flex-direction: column; gap: 12px; padding-top: 10px;">
+  <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 10px;">
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Asunto Legal</mat-label>
+      <input matInput formControlName="asuntoLegal" placeholder="Ej. Consulta penal">
     </mat-form-field>
 
-    <div class="row-fields">
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha</mat-label>
-        <input matInput type="date" formControlName="fecha" />
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Detalles Adicionales</mat-label>
+      <textarea matInput formControlName="detallesAdicionales" placeholder="Detalles de la cita" rows="2"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Fecha y Hora</mat-label>
+      <input matInput formControlName="fechaHora" type="datetime-local">
+    </mat-form-field>
+
+    <div style="display: flex; gap: 10px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Cliente</mat-label>
+        <mat-select formControlName="idCliente">
+          @for (c of clientes; track c.idcliente) {
+            <mat-option [value]="c.idcliente">{{ c.nombre }} - {{ c.dni }}</mat-option>
+          }
+        </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Hora</mat-label>
-        <input matInput type="time" formControlName="hora" />
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Abogado</mat-label>
+        <mat-select formControlName="idAbogado">
+          @for (a of abogados; track a.idAbogado) {
+            <mat-option [value]="a.idAbogado">{{ a.nombre }} {{ a.apellido }}</mat-option>
+          }
+        </mat-select>
       </mat-form-field>
     </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Estado</mat-label>
-      <mat-select formControlName="estado">
-        <mat-option value="Pendiente">Pendiente</mat-option>
-        <mat-option value="En Proceso">En Proceso</mat-option>
-        <mat-option value="Completada">Completada</mat-option>
-        <mat-option value="Cancelada">Cancelada</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-slide-toggle formControlName="activa" color="primary">
+      {{ form.get('activa')?.value ? 'Activa' : 'Inactiva' }}
+    </mat-slide-toggle>
 
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button (click)="cancel()">Cancelar</button>
-  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="save()">
-    Guardar
+<mat-dialog-actions align="end" style="padding-bottom: 15px;">
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="operate()">
+    {{ edicion ? 'Actualizar' : 'Guardar' }}
   </button>
 </mat-dialog-actions>

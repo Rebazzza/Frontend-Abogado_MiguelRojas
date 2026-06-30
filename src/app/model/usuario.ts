@@ -1,6 +1,7 @@
-export class usuario{
-    idUsuario: number;
-    username: string;
-    idRol: number;
-    password: string ;
+export interface Usuario {
+  idUsuario: number;
+  username: string;
+  password?: string;
+  idRol: number;
+  rolName: string;
 }

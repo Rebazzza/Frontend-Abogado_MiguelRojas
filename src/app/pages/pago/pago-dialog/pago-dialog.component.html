@@ -33,6 +33,18 @@
       <mat-error *ngIf="form.get('fechaPago')?.hasError('required')">La fecha es obligatoria</mat-error>
     </mat-form-field>
 
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Caso</mat-label>
+      <mat-select formControlName="idCaso">
+        @for (caso of casos; track caso.idCaso) {
+          <mat-option [value]="caso.idCaso">
+            {{ caso.titulo }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="form.get('idCaso')?.hasError('required')">Seleccione un caso</mat-error>
+    </mat-form-field>
+
     <mat-slide-toggle formControlName="estadoPago" color="primary">
       {{ form.get('estadoPago')?.value ? 'Pagado' : 'Pendiente' }}
     </mat-slide-toggle>

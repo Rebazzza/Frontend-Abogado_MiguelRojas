@@ -1,40 +1,129 @@
-.login-container {
+/* Contenedor de pantalla completa con el color corporativo oscuro */
+.login-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1976d2 0%, #1565c0 50%, #0d47a1 100%);
+  background-color: #2c364c; /* Azul oscuro idéntico al Menú Lateral */
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Tarjeta de Login */
 .login-card {
-  width: 400px;
-  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  padding: 25px 15px;
+  background: #ffffff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+  border: none !important;
 }
 
+/* Encabezado */
 .login-header {
+  display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 25px;
+  padding: 0 !important;
 }
 
-.login-header img {
-  margin-bottom: 8px;
+.brand-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #2c364c; /* Tono oscuro de la marca */
+  margin-bottom: 4px;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #64748b !important; /* Gris slate */
+  font-weight: 400;
+}
+
+/* Formulario */
+.login-content {
+  padding: 0 10px !important;
 }
 
 .full-width {
   width: 100%;
-  margin-bottom: 16px;
 }
 
+/* Personalización de los inputs de Material */
+.custom-field {
+  margin-bottom: 8px;
+}
+
+.custom-field .field-icon {
+  color: #64748b;
+  margin-right: 8px;
+}
+
+.custom-field .toggle-password {
+  color: #64748b;
+}
+
+/* Mensaje de Error */
 .error-message {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #f44336;
-  font-size: 14px;
-  margin-bottom: 16px;
-  padding: 8px 12px;
-  background: #ffebee;
-  border-radius: 4px;
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.error-message mat-icon {
+  margin-right: 8px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* Botón de envío estilizado */
+.submit-btn {
+  background-color: #2c364c !important; /* Mismo color del Layout */
+  color: #ffffff !important;
+  padding: 24px 0 !important; /* Más alto y moderno */
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  letter-spacing: 0.5px;
+  transition: background-color 0.2s ease, transform 0.1s ease !important;
+}
+
+.submit-btn:hover:not([disabled]) {
+  background-color: #21293a !important; /* Oscurece un poco al pasar el cursor */
+}
+
+.submit-btn[disabled] {
+  background-color: #cbd5e1 !important; /* Gris claro si está deshabilitado */
+  color: #94a3b8 !important;
+}
+
+/* Animación sutil de entrada */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

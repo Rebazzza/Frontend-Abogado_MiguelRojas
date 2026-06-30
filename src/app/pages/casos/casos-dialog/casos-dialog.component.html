@@ -20,6 +20,30 @@
       <mat-error *ngIf="form.get('descripcion')?.hasError('required')">La descripción es obligatoria</mat-error>
     </mat-form-field>
 
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Abogado</mat-label>
+      <mat-select formControlName="idAbogado">
+        @for (abogado of abogados; track abogado.idAbogado) {
+          <mat-option [value]="abogado.idAbogado">
+            {{ abogado.nombre }} {{ abogado.apellido }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="form.get('idAbogado')?.hasError('required')">Seleccione un abogado</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Cliente</mat-label>
+      <mat-select formControlName="idCliente">
+        @for (cliente of clientes; track cliente.idcliente) {
+          <mat-option [value]="cliente.idcliente">
+            {{ cliente.nombre }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="form.get('idCliente')?.hasError('required')">Seleccione un cliente</mat-error>
+    </mat-form-field>
+
     <mat-slide-toggle formControlName="estado" color="primary">
       {{ form.get('estado')?.value ? 'Activo' : 'Inactivo' }}
     </mat-slide-toggle>

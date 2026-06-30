@@ -6,23 +6,27 @@
 </h2>
 
 <mat-dialog-content style="min-width: 350px; display: flex; flex-direction: column; gap: 15px; padding-top: 10px;">
-  
+
   <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 10px;">
-    
+
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>Nombre de Usuario</mat-label>
-      <input matInput formControlName="username" placeholder="Ej. Juan Pérez">
+      <input matInput formControlName="username" placeholder="Ej. jperez">
       <mat-icon matSuffix>person</mat-icon>
       @if (form.get('username')?.hasError('required')) {
-        <mat-error>El nombre es obligatorio</mat-error>
+        <mat-error>El nombre de usuario es obligatorio</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline" style="width: 100%;">
-      <mat-label>Rol / Permiso</mat-label>
-      <input matInput formControlName="rol" placeholder="Ej. ADMIN, ABOGADO, ASISTENTE">
+      <mat-label>Rol</mat-label>
+      <mat-select formControlName="idRol">
+        @for (r of roles; track r.idRole) {
+          <mat-option [value]="r.idRole">{{ r.name }} - {{ r.description }}</mat-option>
+        }
+      </mat-select>
       <mat-icon matSuffix>admin_panel_settings</mat-icon>
-      @if (form.get('rol')?.hasError('required')) {
+      @if (form.get('idRol')?.hasError('required')) {
         <mat-error>El rol es obligatorio</mat-error>
       }
     </mat-form-field>
@@ -45,9 +49,9 @@
   <button mat-button (click)="close()">
     <mat-icon style="margin-right: 4px;">cancel</mat-icon> Cancelar
   </button>
-  
+
   <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="operate()">
-    <mat-icon style="margin-right: 4px;">done</mat-icon> 
+    <mat-icon style="margin-right: 4px;">done</mat-icon>
     {{ edicion ? 'Actualizar' : 'Guardar' }}
   </button>
 </mat-dialog-actions>

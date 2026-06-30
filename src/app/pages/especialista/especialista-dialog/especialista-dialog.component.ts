@@ -3,7 +3,10 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatIconModule } from '@angular/material/icon';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Especialista } from '../../../model/especialista';
 import { EspecialistaService } from '../../../services/especialista.service';
 import { switchMap, tap } from 'rxjs';
@@ -15,40 +18,35 @@ import { switchMap, tap } from 'rxjs';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule,
     MatButtonModule,
-    FormsModule,
+    MatIconModule,
     ReactiveFormsModule
   ],
   templateUrl: './especialista-dialog.component.html',
 })
 export class EspecialistaDialogComponent implements OnInit {
-  // Inyecciones necesarias de Angular Material Dialog
   private readonly dialogRef = inject(MatDialogRef<EspecialistaDialogComponent>);
-  protected readonly dataInjected: Especialista = inject(MAT_DIALOG_DATA); // Datos recibidos de la tabla
-  
+  protected readonly dataInjected: Especialista = inject(MAT_DIALOG_DATA);
   private readonly especialistaService = inject(EspecialistaService);
 
-  // Formulario Reactivo basado en tu entidad de Java
   protected form!: FormGroup;
   protected edicion: boolean = false;
 
   ngOnInit(): void {
-    // Definimos los controles del formulario según el modelo de Especialista (nullable = false)
-    this.form = new FormGroup({
-      idEspecialista: new FormControl(null),
-      nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      descripcion: new FormControl('', [Validators.required, Validators.maxLength(500)]),
-      estado: new FormControl('', [Validators.required]),
-      disponibilidad: new FormControl(true),
-      telefono: new FormControl('', [Validators.required]),
-      correo: new FormControl('', [Validators.required, Validators.email])
-    });
+    this.edicion = this.dataInjected != null && (this.dataInjected.idEspecialista ?? 0) > 0;
 
-    // Si viene dataInjected significa que hacemos click en "EDITAR"
-    if (this.dataInjected && this.dataInjected.idEspecialista) {
-      this.edicion = true;
-      this.form.setValue(this.dataInjected); // Rellena el formulario automáticamente
-    }
+    this.form = new FormGroup({
+      idEspecialista: new FormControl(this.dataInjected?.idEspecialista ?? null),
+      nombre: new FormControl(this.dataInjected?.nombre ?? '', [Validators.required, Validators.maxLength(100)]),
+      descripcion: new FormControl(this.dataInjected?.descripcion ?? '', [Validators.required, Validators.maxLength(500)]),
+      dni: new FormControl(this.dataInjected?.dni ?? '', [Validators.required, Validators.minLength(8)]),
+      estado: new FormControl(this.dataInjected?.estado ?? 'ACTIVO', [Validators.required]),
+      disponibilidad: new FormControl(this.dataInjected?.disponibilidad ?? true),
+      telefono: new FormControl(this.dataInjected?.telefono ?? '', [Validators.required]),
+      correo: new FormControl(this.dataInjected?.correo ?? '', [Validators.required, Validators.email])
+    });
   }
 
   operate(): void {

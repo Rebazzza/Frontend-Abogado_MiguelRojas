@@ -6,8 +6,9 @@ import { Component, effect, inject, signal, untracked, viewChild, OnInit } from 
   import { MatInputModule } from '@angular/material/input';
   import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
   import { MatSort, MatSortModule } from '@angular/material/sort';
-  import { MatButtonModule } from '@angular/material/button';
-  import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
   import { RouterOutlet } from '@angular/router';
   import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   import { switchMap, tap } from 'rxjs';
@@ -23,6 +24,7 @@ import { ClienteDialogComponent } from '../cliente/cliente-dialog/cliente-dialog
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
+    MatChipsModule,
     MatIconModule,
     RouterOutlet,
     MatSnackBarModule,
@@ -42,7 +44,7 @@ export class ExpedienteComponent implements OnInit {
   protected $sort = viewChild(MatSort);
 
   // Columnas añadidas y ordenadas igual que el HTML
-  protected displayedColumns: string[] = ['idExpediente', 'titulo', 'tipoExpediente', 'resumenExpediente', 'victima', 'victimario', 'fechaInicio', 'fechaCierre', 'estadoExpediente', 'pdfExpediente', 'acciones'];
+  protected displayedColumns: string[] = ['idExPediente', 'titulo', 'tipoExpediente', 'resumenExpediente', 'victima', 'victimario', 'fechaInicio', 'fechaCierre', 'estadoExpediente', 'acciones'];
 
   constructor() {
     this.initializeEffects();

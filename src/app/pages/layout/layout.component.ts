@@ -9,6 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { environment } from '../../../environments/environment';
+import { NotificationBellComponent } from '../../components/notification-bell/notification-bell.component';
 
 interface MenuItem {
   icon: string;
@@ -29,6 +30,7 @@ interface MenuItem {
     RouterLinkActive,
     RouterLink,
     RouterOutlet,
+    NotificationBellComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
@@ -37,10 +39,12 @@ export class LayoutComponent {
   private readonly authService = inject(AuthService);
 
   protected searchQuery = signal('');
+  protected username = this.authService.$username;
 
   private readonly ALL_MENU_ITEMS: Record<string, MenuItem[]> = {
     ADMIN: [
       { icon: 'dashboard', label: 'Dashboard', route: '/pages/dashboard' },
+      { icon: 'calendar_month', label: 'Calendario', route: '/pages/calendar' },
       { icon: 'gavel', label: 'Abogados', route: '/pages/abogado' },
       { icon: 'balance', label: 'Audiencias', route: '/pages/audiencia' },
       { icon: 'work', label: 'Casos', route: '/pages/caso' },
@@ -55,6 +59,7 @@ export class LayoutComponent {
     ],
     ABOGADO: [
       { icon: 'dashboard', label: 'Dashboard', route: '/pages/dashboard' },
+      { icon: 'calendar_month', label: 'Calendario', route: '/pages/calendar' },
       { icon: 'balance', label: 'Audiencias', route: '/pages/audiencia' },
       { icon: 'work', label: 'Casos', route: '/pages/caso' },
       { icon: 'people', label: 'Clientes', route: '/pages/cliente' },

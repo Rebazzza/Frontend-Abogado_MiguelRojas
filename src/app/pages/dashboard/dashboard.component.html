@@ -24,50 +24,217 @@
       }
     </section>
 
-    <div class="bottom-section">
-      <mat-card class="proximas-citas">
+    <section class="charts-grid">
+      <mat-card class="chart-card">
         <mat-card-header>
-          <mat-icon mat-card-avatar>event</mat-icon>
-          <mat-card-title>Próximas Citas</mat-card-title>
+          <mat-icon mat-card-avatar>people</mat-icon>
+          <mat-card-title>Clientes por tipo</mat-card-title>
         </mat-card-header>
-        <mat-card-content>
-          @if (proximasCitas().length === 0) {
-            <p class="empty">No hay citas programadas</p>
+        <mat-card-content class="chart-body">
+          @if (!chartClientesTipo()) {
+            <p class="empty">Sin datos</p>
           } @else {
-            <mat-list>
-              @for (cita of proximasCitas(); track cita.cliente) {
-                <mat-list-item>
-                  <mat-icon matListItemIcon>event_available</mat-icon>
-                  <div matListItemTitle>{{ cita.cliente }}</div>
-                  <div matListItemLine>{{ cita.asunto }} — {{ cita.fecha }}</div>
-                </mat-list-item>
-                <mat-divider></mat-divider>
+            <div class="pie-wrap">
+              <div class="pie" [style.background]="chartClientesTipo()!.gradient"></div>
+            </div>
+            <div class="pie-legend">
+              @for (s of chartClientesTipo()!.slices; track s.label) {
+                <span class="legend-item">
+                  <span class="legend-dot" [style.background]="s.color"></span>
+                  {{ s.label }} ({{ s.value }})
+                </span>
               }
-            </mat-list>
+            </div>
           }
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="acciones-rapidas">
+      <mat-card class="chart-card">
         <mat-card-header>
-          <mat-icon mat-card-avatar>bolt</mat-icon>
-          <mat-card-title>Acciones rápidas</mat-card-title>
+          <mat-icon mat-card-avatar>work</mat-icon>
+          <mat-card-title>Casos</mat-card-title>
         </mat-card-header>
-        <mat-card-content class="acciones-grid">
-          <button mat-raised-button color="primary" routerLink="/pages/caso">
-            <mat-icon>add_circle</mat-icon> Nuevo Caso
-          </button>
-          <button mat-raised-button color="accent" routerLink="/pages/cliente">
-            <mat-icon>person_add</mat-icon> Nuevo Cliente
-          </button>
-          <button mat-raised-button color="warn" routerLink="/pages/cita">
-            <mat-icon>event</mat-icon> Agendar Cita
-          </button>
-          <button mat-raised-button routerLink="/pages/abogado">
-            <mat-icon>gavel</mat-icon> Abogados
-          </button>
+        <mat-card-content class="chart-body">
+          @if (!chartCasosEstado()) {
+            <p class="empty">Sin datos</p>
+          } @else {
+            <div class="pie-wrap">
+              <div class="pie" [style.background]="chartCasosEstado()!.gradient"></div>
+            </div>
+            <div class="pie-legend">
+              @for (s of chartCasosEstado()!.slices; track s.label) {
+                <span class="legend-item">
+                  <span class="legend-dot" [style.background]="s.color"></span>
+                  {{ s.label }} ({{ s.value }})
+                </span>
+              }
+            </div>
+          }
         </mat-card-content>
       </mat-card>
+
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>payments</mat-icon>
+          <mat-card-title>Pagos por método</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="chart-body">
+          @if (!chartPagosMetodo()) {
+            <p class="empty">Sin datos</p>
+          } @else {
+            <div class="pie-wrap">
+              <div class="pie" [style.background]="chartPagosMetodo()!.gradient"></div>
+            </div>
+            <div class="pie-legend">
+              @for (s of chartPagosMetodo()!.slices; track s.label) {
+                <span class="legend-item">
+                  <span class="legend-dot" [style.background]="s.color"></span>
+                  {{ s.label }} ({{ s.value }})
+                </span>
+              }
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>event</mat-icon>
+          <mat-card-title>Citas por día</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="chart-body">
+          @if (!chartCitasSemana()) {
+            <p class="empty">Sin datos</p>
+          } @else {
+            <div class="bars">
+              @for (b of chartCitasSemana()!.bars; track b.label) {
+                <div class="bar-col">
+                  <div class="bar"
+                    [style.height.%]="chartCitasSemana()!.max > 0 ? (b.value / chartCitasSemana()!.max) * 100 : 0"
+                    [style.background]="b.value > 0 ? '#7b1fa2' : '#e0e0e0'"
+                    [matTooltip]="b.label + ': ' + b.value + ' citas'">
+                  </div>
+                  <span class="bar-label">{{ b.label }}</span>
+                </div>
+              }
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </section>
+
+    <div class="bottom-section">
+      <mat-card class="calendar-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>calendar_month</mat-icon>
+          <mat-card-title>
+            <div class="cal-header">
+              <button mat-icon-button (click)="prevMonth()"><mat-icon>chevron_left</mat-icon></button>
+              <span>{{ monthLabel() }}</span>
+              <button mat-icon-button (click)="nextMonth()"><mat-icon>chevron_right</mat-icon></button>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="cal-body">
+          <div class="cal-days-of-week">
+            <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span>
+          </div>
+          @for (week of weeks(); track $index) {
+            <div class="cal-week">
+              @for (d of week; track $index) {
+                <span class="cal-day"
+                  [class.empty]="d.day === 0"
+                  [class.today]="d.isToday"
+                  [class.has-citas]="d.hasCitas"
+                  [class.selected]="d.dateStr === selectedDateStr()"
+                  (click)="d.day > 0 && selectDay(d.day)">
+                  @if (d.day > 0) {
+                    <span class="cal-day-num">{{ d.day }}</span>
+                    @if (d.hasCitas) {
+                      <span class="cal-dot"></span>
+                    }
+                  }
+                </span>
+              }
+            </div>
+          }
+
+          @if (selectedCitas().length > 0) {
+            <mat-divider class="cal-divider"></mat-divider>
+            <div class="cal-detalle">
+              <p class="cal-detalle-titulo">
+                <mat-icon>event</mat-icon> {{ selectedLabel() }}
+              </p>
+              @for (c of selectedCitas(); track c.asunto + c.hora) {
+                <div class="cal-detalle-item">
+                  <span class="cal-detalle-hora">{{ c.hora }}</span>
+                  <div class="cal-detalle-info">
+                    <strong>{{ c.cliente }}</strong>
+                    <span>{{ c.asunto }}</span>
+                    @if (c.detalles) {
+                      <span class="cal-detalle-detail">{{ c.detalles }}</span>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          } @else if (selectedDateStr()) {
+            <mat-divider class="cal-divider"></mat-divider>
+            <div class="cal-detalle">
+              <p class="cal-detalle-titulo">
+                <mat-icon>event_busy</mat-icon> {{ selectedLabel() }}
+              </p>
+              <p class="empty">No hay citas este da</p>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <div class="right-column">
+        <mat-card class="proximas-citas">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>event</mat-icon>
+            <mat-card-title>Proximas Citas</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (proximasCitas().length === 0) {
+              <p class="empty">No hay citas programadas</p>
+            } @else {
+              <mat-list>
+                @for (c of proximasCitas(); track c.nombre) {
+                  <mat-list-item>
+                    <mat-icon matListItemIcon>event_available</mat-icon>
+                    <div matListItemTitle>{{ c.nombre }}</div>
+                    <div matListItemLine>{{ c.asunto }} — {{ c.fecha }}</div>
+                  </mat-list-item>
+                  <mat-divider></mat-divider>
+                }
+              </mat-list>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="acciones-rapidas">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>bolt</mat-icon>
+            <mat-card-title>Acciones rapidas</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="acciones-grid">
+            <button mat-raised-button color="primary" routerLink="/pages/caso">
+              <mat-icon>add_circle</mat-icon> Nuevo Caso
+            </button>
+            <button mat-raised-button color="accent" routerLink="/pages/cliente">
+              <mat-icon>person_add</mat-icon> Nuevo Cliente
+            </button>
+            <button mat-raised-button color="warn" routerLink="/pages/cita">
+              <mat-icon>event</mat-icon> Agendar Cita
+            </button>
+            <button mat-raised-button routerLink="/pages/abogado">
+              <mat-icon>gavel</mat-icon> Abogados
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   }
 </div>

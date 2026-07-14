@@ -28,7 +28,13 @@
     <div style="display: flex; gap: 10px;">
       <mat-form-field appearance="outline" style="flex: 1;">
         <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="telefono">
+        <input matInput formControlName="telefono" maxlength="9">
+        @if (form.get('telefono')?.hasError('required')) {
+          <mat-error>El teléfono es obligatorio</mat-error>
+        }
+        @if (form.get('telefono')?.hasError('pattern')) {
+          <mat-error>Debe empezar con 9 y tener 9 dígitos</mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="flex: 1;">
@@ -42,14 +48,22 @@
       <input matInput formControlName="especialidad" placeholder="Ej. Derecho Penal, Civil">
     </mat-form-field>
 
-    <mat-form-field appearance="outline" style="width: 100%;">
-      <mat-label>Usuario</mat-label>
-      <mat-select formControlName="idUsuario">
-        @for (u of usuarios; track u.idUsuario) {
-          <mat-option [value]="u.idUsuario">{{ u.username }} - {{ u.rolName }}</mat-option>
+    <div style="display: flex; align-items: baseline; gap: 8px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Usuario</mat-label>
+        <mat-select formControlName="idUsuario">
+          @for (u of usuarios; track u.idUsuario) {
+            <mat-option [value]="u.idUsuario">{{ u.username }} - {{ u.rolName }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('idUsuario')?.hasError('required')) {
+          <mat-error>Debe seleccionar un usuario</mat-error>
         }
-      </mat-select>
-    </mat-form-field>
+      </mat-form-field>
+      <button mat-icon-button type="button" (click)="abrirCrearUsuario()" matTooltip="Crear nuevo usuario">
+        <mat-icon color="primary">person_add</mat-icon>
+      </button>
+    </div>
 
   </form>
 </mat-dialog-content>

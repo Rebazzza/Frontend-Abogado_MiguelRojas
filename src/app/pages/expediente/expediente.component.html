@@ -8,9 +8,9 @@
 <div class="mat-elevation-z8" style="margin: 0 20px 20px 20px;">
   <table mat-table [dataSource]="$dataSource()" matSort>
 
-    <ng-container matColumnDef="idExpediente">
+    <ng-container matColumnDef="idExPediente">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-      <td mat-cell *matCellDef="let row"> {{row.idExpediente}} </td>
+      <td mat-cell *matCellDef="let row"> {{row.idExPediente}} </td>
     </ng-container>
 
     <ng-container matColumnDef="titulo">
@@ -25,7 +25,7 @@
 
     <ng-container matColumnDef="resumenExpediente">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Resumen </th>
-      <td mat-cell *matCellDef="let row"> {{row.resumenExpediente}} </td>
+      <td mat-cell *matCellDef="let row" style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"> {{row.resumenExpediente}} </td>
     </ng-container>
 
     <ng-container matColumnDef="victima">
@@ -50,12 +50,12 @@
 
     <ng-container matColumnDef="estadoExpediente">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado del Expediente </th>
-      <td mat-cell *matCellDef="let row"> {{row.estadoExpediente}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="pdfExpediente">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> PDF del Expediente </th>
-      <td mat-cell *matCellDef="let row"> {{row.pdfExpediente}} </td>
+      <td mat-cell *matCellDef="let row">
+        <mat-chip [style.background-color]="row.estadoExpediente ? '#e8f5e9' : '#ffebee'"
+                  [style.color]="row.estadoExpediente ? '#2e7d32' : '#c62828'">
+          {{ row.estadoExpediente ? 'Activo' : 'Inactivo' }}
+        </mat-chip>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="acciones">
@@ -65,7 +65,7 @@
           <mat-icon>edit</mat-icon>
         </button>
 
-        <button mat-icon-button color="warn" (click)="delete(row.idExpediente)" title="Eliminar">
+        <button mat-icon-button color="warn" (click)="delete(row.idExPediente)" title="Eliminar">
           <mat-icon>delete</mat-icon>
         </button>  
       </td>
@@ -75,7 +75,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="8" style="text-align: center; padding: 15px;">
+      <td class="mat-cell" colspan="10" style="text-align: center; padding: 15px;">
         No hay datos que coincidan con el filtro "{{input.value}}"
       </td>
     </tr>

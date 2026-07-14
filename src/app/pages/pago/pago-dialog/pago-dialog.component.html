@@ -11,8 +11,9 @@
     <div style="display: flex; gap: 10px;">
       <mat-form-field appearance="outline" style="flex: 1;">
         <mat-label>Monto</mat-label>
-        <input matInput formControlName="monto" type="number" step="0.01" placeholder="0.00">
+        <input matInput formControlName="monto" type="number" step="0.01" min="0.01" placeholder="0.00">
         <mat-error *ngIf="form.get('monto')?.hasError('required')">El monto es obligatorio</mat-error>
+        <mat-error *ngIf="form.get('monto')?.hasError('min')">El monto debe ser mayor a 0</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="flex: 1;">
@@ -22,6 +23,7 @@
           <mat-option value="Tarjeta">Tarjeta</mat-option>
           <mat-option value="Transferencia">Transferencia</mat-option>
           <mat-option value="Cheque">Cheque</mat-option>
+          <mat-option value="Yape">Yape</mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('metodoPago')?.hasError('required')">El método es obligatorio</mat-error>
       </mat-form-field>
@@ -43,6 +45,18 @@
         }
       </mat-select>
       <mat-error *ngIf="form.get('idCaso')?.hasError('required')">Seleccione un caso</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Cliente</mat-label>
+      <mat-select formControlName="idCliente">
+        <mat-option [value]="null">Sin asignar</mat-option>
+        @for (c of clientes; track c.idCliente) {
+          <mat-option [value]="c.idCliente">
+            {{ c.nombre }} - {{ c.dni }}
+          </mat-option>
+        }
+      </mat-select>
     </mat-form-field>
 
     <mat-slide-toggle formControlName="estadoPago" color="primary">

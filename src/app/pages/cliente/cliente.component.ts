@@ -1,6 +1,6 @@
 import { Component, effect, inject, OnInit, signal, untracked, viewChild } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
-
+import { AuthService } from '../../services/auth.service';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterOutlet } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -26,6 +27,7 @@ import { ClienteDialogComponent } from './cliente-dialog/cliente-dialog.componen
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
+    MatChipsModule,
     MatIconModule,
     RouterOutlet,
     MatSnackBarModule,
@@ -36,6 +38,7 @@ import { ClienteDialogComponent } from './cliente-dialog/cliente-dialog.componen
 })
 export class ClienteComponent implements OnInit { 
   private readonly clienteService = inject(ClienteService);
+  private readonly authService = inject(AuthService);
   private readonly snackBar = inject(MatSnackBar);
   private readonly dialog = inject(MatDialog);
   
@@ -52,10 +55,17 @@ export class ClienteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listarAbogados();
+    this.cargarClientes();
   }
 
-  private listarAbogados(): void {
+  private cargarClientes(): void {
+    const role = this.authService.$role();
+    const idAbogado = this.authService.$idAbogado();
+    if (role && !role.includes('ADMIN') && idAbogado != null) {
+      this.clienteService.abogadoIdFilter.set(idAbogado);
+    } else {
+      this.clienteService.abogadoIdFilter.set(null);
+    }
     this.clienteService.findAll().subscribe({
       next: (data) => this.clienteService.setListChange(data),
       error: (err) => console.error('Error al cargar clientes', err)
@@ -87,7 +97,7 @@ export class ClienteComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.listarAbogados();
+      this.cargarClientes();
     });
   }
 

@@ -1,5 +1,5 @@
 export class Cliente {
-    idcliente: number;
+    idCliente: number;
     nombre: string;
     descripcion: string;
     estado: boolean;
@@ -9,5 +9,5 @@ export class Cliente {
     direccion: string;
     correo: string;
     tipoCliente: string;
-
+    idAbogado?: number | null;
 }

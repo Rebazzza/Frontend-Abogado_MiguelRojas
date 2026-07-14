@@ -5,4 +5,5 @@ export class pago {
     fechaPago: string;
     estadoPago: boolean;
     idCaso: number;
+    idCliente: number | null;
 }

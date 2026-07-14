@@ -44,7 +44,7 @@ export class EspecialistaDialogComponent implements OnInit {
       dni: new FormControl(this.dataInjected?.dni ?? '', [Validators.required, Validators.minLength(8)]),
       estado: new FormControl(this.dataInjected?.estado ?? 'ACTIVO', [Validators.required]),
       disponibilidad: new FormControl(this.dataInjected?.disponibilidad ?? true),
-      telefono: new FormControl(this.dataInjected?.telefono ?? '', [Validators.required]),
+      telefono: new FormControl(this.dataInjected?.telefono ?? '', [Validators.required, Validators.pattern(/^9\d{8}$/)]),
       correo: new FormControl(this.dataInjected?.correo ?? '', [Validators.required, Validators.email])
     });
   }

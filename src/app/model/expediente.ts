@@ -14,6 +14,5 @@ export class expediente {
     //el expediente recien agregado por defecto esta en proceso = false
     estadoExpediente: boolean = false;
     
-    pdfExpediente: string;
     idCaso: number;
 }

@@ -31,6 +31,22 @@
       }
     </mat-form-field>
 
+    <div style="display: flex; align-items: baseline; gap: 8px;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Abogado</mat-label>
+        <mat-select formControlName="idAbogado">
+          <mat-option [value]="null">Sin asignar</mat-option>
+          @for (a of abogados; track a.idAbogado) {
+            <mat-option [value]="a.idAbogado">{{ a.nombre }} {{ a.apellido }}</mat-option>
+          }
+        </mat-select>
+        <mat-icon matSuffix>gavel</mat-icon>
+      </mat-form-field>
+      <button mat-icon-button type="button" (click)="abrirCrearAbogado()" matTooltip="Crear nuevo abogado">
+        <mat-icon color="primary">person_add</mat-icon>
+      </button>
+    </div>
+
     @if (!edicion) {
       <mat-form-field appearance="outline" style="width: 100%;">
         <mat-label>Contraseña</mat-label>

@@ -48,11 +48,20 @@ export class CitaDialogComponent implements OnInit {
   ngOnInit(): void {
     this.edicion = this.data != null && (this.data.idCita ?? 0) > 0;
 
+    let fechaDate = '';
+    let fechaTime = '';
+    if (this.data?.fechaHora) {
+      const dt = new Date(this.data.fechaHora);
+      fechaDate = dt.toISOString().split('T')[0];
+      fechaTime = dt.toTimeString().slice(0, 5);
+    }
+
     this.form = new FormGroup({
       idCita: new FormControl(this.data?.idCita ?? null),
       asuntoLegal: new FormControl(this.data?.asuntoLegal ?? '', [Validators.required]),
       detallesAdicionales: new FormControl(this.data?.detallesAdicionales ?? ''),
-      fechaHora: new FormControl(this.data?.fechaHora ?? '', [Validators.required]),
+      fechaDate: new FormControl(fechaDate, [Validators.required]),
+      fechaTime: new FormControl(fechaTime, [Validators.required]),
       activa: new FormControl(this.data?.activa ?? true),
       idCliente: new FormControl(this.data?.idCliente ?? null, [Validators.required]),
       idAbogado: new FormControl(this.data?.idAbogado ?? null, [Validators.required]),
@@ -72,12 +81,22 @@ export class CitaDialogComponent implements OnInit {
   operate() {
     if (this.form.invalid) return;
 
-    const value: cita = this.form.value;
+    const value = this.form.value;
+    const fechaHora = `${value.fechaDate}T${value.fechaTime}:00`;
+
+    const payload: cita = {
+      ...value,
+      fechaHora,
+    };
+
+    delete (payload as any).fechaDate;
+    delete (payload as any).fechaTime;
+
     const msg = this.edicion ? 'UPDATED' : 'CREATED';
 
     const operation$ = this.edicion
-      ? this.citaService.update(value.idCita!, value)
-      : this.citaService.save(value);
+      ? this.citaService.update(payload.idCita!, payload)
+      : this.citaService.save(payload);
 
     operation$.pipe(
       switchMap(() => this.citaService.findAll()),

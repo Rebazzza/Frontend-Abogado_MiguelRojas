@@ -28,7 +28,13 @@
     <div style="display: flex; gap: 10px;">
       <mat-form-field appearance="outline" style="flex: 1;">
         <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="telefono">
+        <input matInput formControlName="telefono" maxlength="9">
+        @if (form.get('telefono')?.hasError('required')) {
+          <mat-error>El teléfono es obligatorio</mat-error>
+        }
+        @if (form.get('telefono')?.hasError('pattern')) {
+          <mat-error>Debe empezar con 9 y tener 9 dígitos</mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="flex: 1;">

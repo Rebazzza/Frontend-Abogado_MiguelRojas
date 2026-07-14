@@ -22,6 +22,16 @@
           <mat-option value="Jurídico">Jurídico</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>Abogado</mat-label>
+        <mat-select formControlName="idAbogado">
+          <mat-option [value]="null">Sin asignar</mat-option>
+          <mat-option *ngFor="let a of abogados" [value]="a.idAbogado">
+            {{ a.nombre }} {{ a.apellido }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <mat-form-field appearance="outline" style="width: 100%;">
@@ -44,8 +54,9 @@
     <div style="display: flex; gap: 10px;">
       <mat-form-field appearance="outline" style="flex: 1;">
         <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="telefono" placeholder="999888777">
+        <input matInput formControlName="telefono" placeholder="999888777" maxlength="9">
         <mat-error *ngIf="form.get('telefono')?.hasError('required')">El teléfono es obligatorio</mat-error>
+        <mat-error *ngIf="form.get('telefono')?.hasError('pattern')">Debe empezar con 9 y tener 9 dígitos</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="flex: 1;">

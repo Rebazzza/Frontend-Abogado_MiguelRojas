@@ -35,13 +35,14 @@
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>Cliente</mat-label>
       <mat-select formControlName="idCliente">
-        @for (cliente of clientes; track cliente.idcliente) {
-          <mat-option [value]="cliente.idcliente">
+        @for (cliente of clientes; track cliente.idCliente) {
+          <mat-option [value]="cliente.idCliente">
             {{ cliente.nombre }}
           </mat-option>
         }
       </mat-select>
       <mat-error *ngIf="form.get('idCliente')?.hasError('required')">Seleccione un cliente</mat-error>
+      
     </mat-form-field>
 
     <mat-slide-toggle formControlName="estado" color="primary">

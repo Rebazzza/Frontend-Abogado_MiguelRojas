@@ -53,9 +53,10 @@
     <mat-sidenav-content class="main-content">
       
       <div class="top-user-bar">
+        <app-notification-bell></app-notification-bell>
         <div class="user-profile">
           <mat-icon>account_circle</mat-icon>
-          <span class="user-name">Miguel Rojas</span>
+          <span class="user-name">{{ username() || 'Usuario' }}</span>
         </div>
       </div>
 

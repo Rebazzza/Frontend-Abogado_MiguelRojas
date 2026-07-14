@@ -7,8 +7,9 @@
   import { MatInputModule } from '@angular/material/input';
   import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
   import { MatSort, MatSortModule } from '@angular/material/sort';
-  import { MatButtonModule } from '@angular/material/button';
-  import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
   import { RouterOutlet } from '@angular/router';
   import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   import { switchMap, tap } from 'rxjs';
@@ -25,6 +26,7 @@
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
+    MatChipsModule,
     MatIconModule,
     RouterOutlet,
     MatSnackBarModule,
@@ -43,7 +45,7 @@ export class AbogadoComponent implements OnInit {
   protected $sort = viewChild(MatSort);
 
   // Columnas añadidas y ordenadas igual que el HTML
-  protected displayedColumns: string[] = ['idAbogado', 'nombre', 'apellido', 'correo', 'telefono', 'especialidad', 'dni', 'acciones'];
+  protected displayedColumns: string[] = ['idAbogado', 'nombre', 'apellido', 'correo', 'telefono', 'especialidad', 'dni', 'estado', 'acciones'];
 
   constructor() {
     this.initializeEffects();
@@ -114,7 +116,12 @@ export class AbogadoComponent implements OnInit {
         switchMap(() => this.abogadoService.findAll()),
         tap(data => this.abogadoService.setListChange(data)),
         tap(() => this.abogadoService.setMessageChange('DELETED'))
-      ).subscribe();
+      ).subscribe({
+        error: (err) => {
+          console.error('Error al eliminar abogado:', err);
+          this.snackBar.open('No se puede eliminar: tiene registros relacionados', 'CERRAR', { duration: 4000, horizontalPosition: 'right', verticalPosition: 'top' });
+        }
+      });
     }
   }
   

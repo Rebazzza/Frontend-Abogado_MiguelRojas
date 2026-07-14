@@ -97,13 +97,18 @@ export class UsuarioComponent implements OnInit {
   }
 
   delete(idUsuario: number){
-    const ok = window.confirm('Are you sure to delete?');
+    const ok = window.confirm('¿Estás seguro de eliminar este usuario?');
     if(ok){
       this.usuarioService.delete(idUsuario).pipe(
         switchMap(() => this.usuarioService.findAll()),
         tap(data => this.usuarioService.setListChange(data)),
         tap(() => this.usuarioService.setMessageChange('DELETED'))
-      ).subscribe();
+      ).subscribe({
+        error: (err) => {
+          console.error('Error al eliminar usuario:', err);
+          this.snackBar.open('No se puede eliminar: tiene registros relacionados', 'CERRAR', { duration: 4000, horizontalPosition: 'right', verticalPosition: 'top' });
+        }
+      });
     }
   }
   

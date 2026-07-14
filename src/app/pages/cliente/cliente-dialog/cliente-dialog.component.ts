@@ -9,7 +9,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ClienteService } from '../../../services/cliente.service';
+import { AbogadoService } from '../../../services/abogado.service';
 import { Cliente } from '../../../model/cliente';
+import { Abogado } from '../../../model/abogado';
 import { switchMap, tap } from 'rxjs';
 
 @Component({
@@ -30,26 +32,31 @@ import { switchMap, tap } from 'rxjs';
 })
 export class ClienteDialogComponent implements OnInit {
   private readonly clienteService = inject(ClienteService);
+  private readonly abogadoService = inject(AbogadoService);
   protected readonly data: Cliente = inject(MAT_DIALOG_DATA);
   private readonly dialogRef = inject(MatDialogRef<ClienteDialogComponent>);
 
   protected form!: FormGroup;
   protected edicion: boolean = false;
+  protected abogados: Abogado[] = [];
 
   ngOnInit(): void {
-    this.edicion = this.data != null && (this.data.idcliente ?? 0) > 0;
+    this.edicion = this.data != null && (this.data.idCliente ?? 0) > 0;
+
+    this.abogadoService.findAll().subscribe(list => this.abogados = list);
 
     this.form = new FormGroup({
-      idcliente: new FormControl(this.data?.idcliente ?? null),
+      idCliente: new FormControl(this.data?.idCliente ?? null),
       nombre: new FormControl(this.data?.nombre ?? '', [Validators.required]),
       descripcion: new FormControl(this.data?.descripcion ?? ''),
       dni: new FormControl(this.data?.dni ?? '', [Validators.minLength(8), Validators.maxLength(8)]),
       RUC: new FormControl(this.data?.RUC ?? ''),
-      telefono: new FormControl(this.data?.telefono ?? '', [Validators.required]),
+      telefono: new FormControl(this.data?.telefono ?? '', [Validators.required, Validators.pattern(/^9\d{8}$/)]),
       direccion: new FormControl(this.data?.direccion ?? ''),
       correo: new FormControl(this.data?.correo ?? '', [Validators.email]),
       tipoCliente: new FormControl(this.data?.tipoCliente ?? 'Natural'),
       estado: new FormControl(this.data?.estado ?? true),
+      idAbogado: new FormControl(this.data?.idAbogado ?? null),
     });
   }
 
@@ -60,7 +67,7 @@ export class ClienteDialogComponent implements OnInit {
     const msg = this.edicion ? 'UPDATED' : 'CREATED';
 
     const operation$ = this.edicion
-      ? this.clienteService.update(value.idcliente!, value)
+      ? this.clienteService.update(value.idCliente!, value)
       : this.clienteService.save(value);
 
     operation$.pipe(

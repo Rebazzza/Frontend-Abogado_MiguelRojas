@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterOutlet } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -27,6 +28,7 @@ import { CasosDialogComponent } from './casos-dialog/casos-dialog.component';
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
+    MatChipsModule,
     MatIconModule,
     RouterOutlet,
     MatSnackBarModule,

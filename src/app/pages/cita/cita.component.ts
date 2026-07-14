@@ -1,5 +1,7 @@
 import { Component, effect, inject, OnInit, signal, untracked, viewChild } from '@angular/core';
 import { CitaService } from '../../services/cita.service';
+import { ClienteService } from '../../services/cliente.service';
+import { AbogadoService } from '../../services/abogado.service';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterOutlet } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -25,6 +28,7 @@ import { CitaDialogComponent } from './cita-dialog/cita-dialog.component';
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
+    MatChipsModule,
     MatIconModule,
     RouterOutlet,
     MatSnackBarModule,
@@ -35,6 +39,8 @@ import { CitaDialogComponent } from './cita-dialog/cita-dialog.component';
 })
 export class CitaComponent implements OnInit { 
   private readonly citaService = inject(CitaService);
+  private readonly clienteService = inject(ClienteService);
+  private readonly abogadoService = inject(AbogadoService);
   private readonly snackBar = inject(MatSnackBar);
   private readonly dialog = inject(MatDialog);
 
@@ -42,14 +48,31 @@ export class CitaComponent implements OnInit {
   protected $paginator = viewChild(MatPaginator);
   protected $sort = viewChild(MatSort);
 
-  protected displayedColumns: string[] = ['idCita', 'idCliente', 'idAbogado', 'asuntoLegal', 'detallesAdicionales', 'fechaHora', 'activa', 'acciones'];
+  protected clientesMap = new Map<number, string>();
+  protected abogadosMap = new Map<number, string>();
+
+  protected displayedColumns: string[] = ['idCita', 'cliente', 'abogado', 'asuntoLegal', 'detallesAdicionales', 'fechaHora', 'activa', 'acciones'];
 
   constructor() {
     this.initializeEffects();
   }
 
   ngOnInit(): void {
+    this.cargarMapas();
     this.listarCitas();
+  }
+
+  private cargarMapas(): void {
+    this.clienteService.findAll().subscribe(data => {
+      for (const c of data) {
+        this.clientesMap.set(c.idCliente, c.nombre || c.dni || c.idCliente.toString());
+      }
+    });
+    this.abogadoService.findAll().subscribe(data => {
+      for (const a of data) {
+        this.abogadosMap.set(a.idAbogado, a.nombre + ' ' + a.apellido);
+      }
+    });
   }
 
   private listarCitas(): void {

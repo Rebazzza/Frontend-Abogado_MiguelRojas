@@ -1,0 +1,14 @@
+<div class="calendar-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Calendario de Citas</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if (loading()) {
+        <div class="loading">Cargando calendario...</div>
+      } @else {
+        <full-calendar [options]="calendarOptions"></full-calendar>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

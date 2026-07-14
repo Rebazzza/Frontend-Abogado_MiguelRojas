@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +13,7 @@ import { Abogado } from '../../../model/abogado';
 import { Usuario } from '../../../model/usuario';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UsuarioDialogComponent } from '../../usuario/usuario-dialog/usuario-dialog.component';
 
 @Component({
   selector: 'app-abogado-dialog',
@@ -24,6 +26,7 @@ import { CommonModule } from '@angular/common';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
+    MatTooltipModule,
     ReactiveFormsModule
   ],
   templateUrl: './abogado-dialog.component.html'
@@ -32,6 +35,7 @@ export class AbogadoDialogComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly abogadoService = inject(AbogadoService);
   private readonly usuarioService = inject(UsuarioService);
+  private readonly dialog = inject(MatDialog);
   protected readonly data: Abogado = inject(MAT_DIALOG_DATA);
   private readonly dialogRef = inject(MatDialogRef<AbogadoDialogComponent>);
 
@@ -52,14 +56,14 @@ export class AbogadoDialogComponent implements OnInit {
       nombre: new FormControl(this.data?.nombre ?? '', [Validators.required]),
       apellido: new FormControl(this.data?.apellido ?? '', [Validators.required]),
       correo: new FormControl(this.data?.correo ?? '', [Validators.required, Validators.email]),
-      telefono: new FormControl(this.data?.telefono ?? '', [Validators.required]),
+      telefono: new FormControl(this.data?.telefono ?? '', [Validators.required, Validators.pattern(/^9\d{8}$/)]),
       especialidad: new FormControl(this.data?.especialidad ?? '', [Validators.required]),
       dni: new FormControl(this.data?.dni ?? '', [Validators.required, Validators.minLength(8)]),
-      idUsuario: new FormControl(this.data?.idUsuario ?? null)
+      idUsuario: new FormControl(this.data?.idUsuario ?? null, [Validators.required])
     });
   }
   
-operate(){
+operate() {
   if (this.form.invalid) return;
 
   const formValue = this.form.value;
@@ -72,31 +76,38 @@ operate(){
     dni: formValue.dni,
     correo: formValue.correo,
     especialidad: formValue.especialidad,
-    estado: this.data?.estado ?? true,
-    idUsuario: this.data?.idUsuario ?? null
+    estado: formValue.estado ?? true,
+    idUsuario: formValue.idUsuario
   };
 
-  // Solo por seguridad para depurar, pon este log antes de enviar:
-  console.log("Payload enviado al backend:", abogadoPayload);
+  console.log("Payload enviado a /abogados:", abogadoPayload);
 
   const msg = this.edicion ? 'UPDATED' : 'CREATED';
-  
-  const operation$ = this.edicion 
-    ? this.abogadoService.update(abogadoPayload.idAbogado, abogadoPayload) 
+
+  const operation$ = this.edicion
+    ? this.abogadoService.update(abogadoPayload.idAbogado!, abogadoPayload)
     : this.abogadoService.save(abogadoPayload);
 
   operation$.pipe(
     switchMap(() => this.abogadoService.findAll()),
-    tap(data => this.abogadoService.setListChange(data)),
+    tap((data) => this.abogadoService.setListChange(data)),
     tap(() => this.abogadoService.setMessageChange(msg))
-  )
-  .subscribe({
+  ).subscribe({
     next: () => this.close(),
-    error: (err) => {
-      console.error("El backend volvió a rechazar la petición:", err);
-    }
+    error: (err) => console.error("El backend volvió a rechazar la petición:", err)
   });
 }
+  abrirCrearUsuario(): void {
+    const ref = this.dialog.open(UsuarioDialogComponent, {
+      width: '550px',
+    });
+    ref.afterClosed().subscribe(() => {
+      this.usuarioService.findAll().subscribe(data => {
+        this.usuarios = data;
+        this.cdr.detectChanges();
+      });
+    });
+  }
 
   close(){
     this.dialogRef.close();

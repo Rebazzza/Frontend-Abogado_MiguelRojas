@@ -14,6 +14,7 @@ import { ServicioLegalComponent } from './pages/servicio-legal/servicio-legal.co
 import { AudienciaComponent } from './pages/audiencia/audiencia.component';
 import { CitaComponent } from './pages/cita/cita.component';
 import { ExpedienteComponent } from './pages/expediente/expediente.component';
+import { CalendarComponent } from './pages/calendar/calendar.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -23,6 +24,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'calendar', component: CalendarComponent },
       {
         path: 'abogado', component: AbogadoComponent,
         children: [

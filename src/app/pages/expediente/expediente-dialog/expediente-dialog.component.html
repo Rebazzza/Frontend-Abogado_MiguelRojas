@@ -43,6 +43,9 @@
       <mat-form-field appearance="outline" style="flex: 1;">
         <mat-label>Fecha de Inicio</mat-label>
         <input matInput formControlName="fechaInicio" type="date">
+        <mat-error *ngIf="form.get('fechaInicio')?.hasError('fechaInicioMuyAntigua')">
+          La fecha de inicio no puede tener más de 2 años de antigüedad
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="flex: 1;">
@@ -50,6 +53,10 @@
         <input matInput formControlName="fechaCierre" type="date">
       </mat-form-field>
     </div>
+
+    <mat-error *ngIf="form.hasError('fechaCierreAnterior')" style="margin-top: -8px; font-size: 12px;">
+      La fecha de cierre no puede ser anterior a la fecha de inicio
+    </mat-error>
 
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>Caso</mat-label>
@@ -61,11 +68,6 @@
         }
       </mat-select>
       <mat-error *ngIf="form.get('idCaso')?.hasError('required')">Seleccione un caso</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" style="width: 100%;">
-      <mat-label>PDF del Expediente</mat-label>
-      <input matInput formControlName="pdfExpediente" placeholder="URL del PDF">
     </mat-form-field>
 
     <mat-slide-toggle formControlName="estadoExpediente" color="primary">

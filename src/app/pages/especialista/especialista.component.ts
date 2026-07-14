@@ -98,7 +98,12 @@ export class EspecialistaComponent implements OnInit {
         switchMap(() => this.especialistaService.findAll()),
         tap(data => this.especialistaService.setListChange(data)),
         tap(() => this.especialistaService.setMessageChange('ELIMINADO'))
-      ).subscribe();
+      ).subscribe({
+        error: (err) => {
+          console.error('Error al eliminar especialista:', err);
+          this.snackBar.open('No se puede eliminar: tiene registros relacionados', 'CERRAR', { duration: 4000, horizontalPosition: 'right', verticalPosition: 'top' });
+        }
+      });
     }
   }
 
